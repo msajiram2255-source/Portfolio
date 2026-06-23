@@ -14,23 +14,24 @@ const CustomCursor = () => {
   
   const currentScale = useRef(1);
   const currentDotScale = useRef(1);
+  const isVisible = useRef(false);
   
   const notes = ['♪', '♫', '♬', '♩'];
   
   useEffect(() => {
-    // Only initialize the cursor effect if pointing device is accurate (desktop)
-    if (!window.matchMedia("(pointer: fine)").matches) {
-       return;
-    }
-
     const onMouseMove = (e) => {
+      isVisible.current = true;
       mouse.current.x = e.clientX;
       mouse.current.y = e.clientY;
     };
     
-    const onMouseOver = (e) => {
-      // Find closest interactive parent
-      const target = e.target.closest('a, button, input, select, textarea, [role="button"], .cursor-pointer, .card, img, .interactive');
+    const onMouseLeave = () => {
+      isVisible.current = false;
+    };
+    
+    const handleInteractionStart = (x, y, targetEl) => {
+      if (!targetEl) return;
+      const target = targetEl.closest('a, button, input, select, textarea, [role="button"], .cursor-pointer, .card, img, .interactive');
       
       if (target) {
         if (!isHovering.current) {
@@ -39,7 +40,7 @@ const CustomCursor = () => {
             cursorOutlineRef.current.classList.add('border-[#D4AF37]', 'bg-[#D4AF37]/10');
             cursorOutlineRef.current.classList.remove('border-white/25');
           }
-          spawnParticles(mouse.current.x, mouse.current.y);
+          spawnParticles(x, y);
         }
       } else {
         if (isHovering.current) {
@@ -51,9 +52,38 @@ const CustomCursor = () => {
         }
       }
     };
+
+    const onMouseOver = (e) => {
+      handleInteractionStart(mouse.current.x, mouse.current.y, e.target);
+    };
+
+    const onTouchStart = (e) => {
+      isVisible.current = true;
+      if (e.touches && e.touches[0]) {
+        mouse.current.x = e.touches[0].clientX;
+        mouse.current.y = e.touches[0].clientY;
+        handleInteractionStart(mouse.current.x, mouse.current.y, e.target);
+      }
+    };
+
+    const onTouchMove = (e) => {
+      isVisible.current = true;
+      if (e.touches && e.touches[0]) {
+        mouse.current.x = e.touches[0].clientX;
+        mouse.current.y = e.touches[0].clientY;
+      }
+    };
+
+    const onTouchEnd = () => {
+      isVisible.current = false;
+    };
     
     window.addEventListener('mousemove', onMouseMove);
     window.addEventListener('mouseover', onMouseOver);
+    document.addEventListener('mouseleave', onMouseLeave);
+    window.addEventListener('touchstart', onTouchStart, { passive: true });
+    window.addEventListener('touchmove', onTouchMove, { passive: true });
+    window.addEventListener('touchend', onTouchEnd, { passive: true });
     
     let animationFrameId;
     
@@ -69,11 +99,15 @@ const CustomCursor = () => {
       const targetDotScale = isHovering.current ? 0 : 1;
       currentDotScale.current += (targetDotScale - currentDotScale.current) * 0.2;
       
+      const targetOpacity = isVisible.current ? 1 : 0;
+      
       if (cursorDotRef.current) {
         cursorDotRef.current.style.transform = `translate(${mouse.current.x}px, ${mouse.current.y}px) translate(-50%, -50%) scale(${currentDotScale.current})`;
+        cursorDotRef.current.style.opacity = targetOpacity;
       }
       if (cursorOutlineRef.current) {
         cursorOutlineRef.current.style.transform = `translate(${outline.current.x}px, ${outline.current.y}px) translate(-50%, -50%) scale(${currentScale.current})`;
+        cursorOutlineRef.current.style.opacity = targetOpacity;
       }
       
       // Update particles
@@ -111,6 +145,10 @@ const CustomCursor = () => {
     return () => {
       window.removeEventListener('mousemove', onMouseMove);
       window.removeEventListener('mouseover', onMouseOver);
+      document.removeEventListener('mouseleave', onMouseLeave);
+      window.removeEventListener('touchstart', onTouchStart);
+      window.removeEventListener('touchmove', onTouchMove);
+      window.removeEventListener('touchend', onTouchEnd);
       cancelAnimationFrame(animationFrameId);
       
       // Clean up particles
@@ -150,7 +188,7 @@ const CustomCursor = () => {
   };
 
   return (
-    <div className="custom-cursor-container z-[9999] pointer-events-none fixed top-0 left-0 w-full h-full overflow-hidden hidden lg:block mix-blend-difference">
+    <div className="custom-cursor-container z-[9999] pointer-events-none fixed top-0 left-0 w-full h-full overflow-hidden mix-blend-difference">
       <div ref={particlesContainerRef} className="particles-container absolute top-0 left-0 w-full h-full pointer-events-none" />
       <div 
         ref={cursorOutlineRef} 

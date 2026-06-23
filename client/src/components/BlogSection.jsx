@@ -23,13 +23,30 @@ export default function BlogSection({ blogs }) {
 
         {/* Blogs Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {blogs.map((blog) => (
-            <motion.div
-              key={blog._id}
-              
-              transition={{ duration: 0.3 }}
-              className="bg-white border border-cream-300 rounded overflow-hidden flex flex-col justify-between group  shadow-sm transition-all duration-300"
-            >
+          {blogs.map((blog, index) => {
+            const slideX = index % 2 === 0 ? -60 : 60;
+            const rotateVal = index % 2 === 0 ? -5 : 5;
+            return (
+              <motion.div
+                key={blog._id}
+                initial={{ opacity: 0, x: slideX, y: 40, rotate: rotateVal, scale: 0.94 }}
+                whileInView={{ opacity: 1, x: 0, y: 0, rotate: 0, scale: 1 }}
+                viewport={{ once: false, amount: 0.05 }}
+                whileHover={{ 
+                  y: -12, 
+                  scale: 1.02,
+                  boxShadow: "0 25px 50px -12px rgba(179, 140, 38, 0.15)"
+                }}
+                whileTap={{ scale: 0.98 }}
+                transition={{ 
+                  type: "spring",
+                  stiffness: 70,
+                  damping: 15,
+                  mass: 0.8,
+                  delay: (index % 4) * 0.08
+                }}
+                className="bg-white border border-cream-300 rounded overflow-hidden flex flex-col justify-between group shadow-sm cursor-pointer"
+              >
               {/* Blog Cover Image */}
               <div className="aspect-[16/10] overflow-hidden bg-neutral-100 border-b border-cream-300/40 relative">
                 <img 
@@ -69,7 +86,8 @@ export default function BlogSection({ blogs }) {
                 </button>
               </div>
             </motion.div>
-          ))}
+          );
+        })}
         </div>
 
       </div>

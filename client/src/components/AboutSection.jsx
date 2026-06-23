@@ -66,11 +66,17 @@ export default function AboutSection({ onActionClick }) {
             {stats.map((stat, index) => (
               <motion.div
                 key={index}
-                initial={{ opacity: 0, x: 20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="flex items-center space-x-3.5 text-left"
+                initial={{ opacity: 0, x: 30, y: 15, scale: 0.97 }}
+                whileInView={{ opacity: 1, x: 0, y: 0, scale: 1 }}
+                viewport={{ once: false, amount: 0.05 }}
+                whileHover={{ x: 8, scale: 1.01 }}
+                transition={{ 
+                  type: "spring",
+                  stiffness: 100,
+                  damping: 15,
+                  delay: index * 0.08
+                }}
+                className="flex items-center space-x-3.5 text-left cursor-pointer group"
               >
                 <div className="w-10 h-10 rounded-full border border-cream-300 flex items-center justify-center flex-shrink-0 text-charcoal-900 bg-cream-50/50">
                   {stat.icon}

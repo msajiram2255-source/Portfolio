@@ -61,20 +61,35 @@ export default function WorksShowcase({ songs, currentSong, isPlaying, onSongSel
         {/* Songs Grid */}
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4.5">
           <AnimatePresence mode="popLayout">
-            {filteredSongs.map((song) => {
+            {filteredSongs.map((song, index) => {
               const isCurrent = currentSong && currentSong._id === song._id;
               const isCurrentPlaying = isCurrent && isPlaying;
+              const slideX = index % 2 === 0 ? -40 : 40;
+              const rotateVal = index % 2 === 0 ? -3 : 3;
 
               return (
                 <motion.div
                   layout
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.95 }}
-                  transition={{ duration: 0.4 }}
+                  initial={{ opacity: 0, x: slideX, y: 30, rotate: rotateVal, scale: 0.95 }}
+                  whileInView={{ opacity: 1, x: 0, y: 0, rotate: 0, scale: 1 }}
+                  viewport={{ once: false, amount: 0.05 }}
+                  whileHover={{ 
+                    y: -8, 
+                    scale: 1.02,
+                    boxShadow: "0 15px 30px -10px rgba(179, 140, 38, 0.12)"
+                  }}
+                  whileTap={{ scale: 0.98 }}
+                  exit={{ opacity: 0, x: slideX, rotate: rotateVal, scale: 0.95 }}
+                  transition={{ 
+                    type: "spring",
+                    stiffness: 80,
+                    damping: 15,
+                    mass: 0.7,
+                    delay: (index % 5) * 0.06
+                  }}
                   key={song._id}
                   onClick={() => onWorkClick && onWorkClick(song)}
-                  className="shimmer-card flex flex-col bg-white border border-cream-300 rounded p-3 relative overflow-hidden group hover:border-gold-500/30 transition-all duration-500 shadow-sm cursor-pointer"
+                  className="shimmer-card flex flex-col bg-white border border-cream-300 rounded p-3 relative overflow-hidden group hover:border-gold-500/30 shadow-sm cursor-pointer"
                 >
                   {/* Cover Artwork Container */}
                   <div className="relative aspect-[1/1] bg-neutral-100 rounded overflow-hidden mb-3 shadow-sm border border-cream-300/40">

@@ -7,6 +7,7 @@ import WorksShowcase from '../components/WorksShowcase';
 import GallerySection from '../components/GallerySection';
 import BlogSection from '../components/BlogSection';
 import ContactForm from '../components/ContactForm';
+import ScrollReveal from '../components/ScrollReveal';
 
 export default function Home({ 
   songs, 
@@ -48,47 +49,61 @@ export default function Home({
       <hr className="border-t border-cream-300/60 mx-auto max-w-7xl" />
 
       {/* 2. Artist Editorial Intro */}
-      <AboutSection onActionClick={handleExploreWorks} />
+      <ScrollReveal>
+        <AboutSection onActionClick={handleExploreWorks} />
+      </ScrollReveal>
 
       <hr className="border-t border-cream-300/60 mx-auto max-w-7xl" />
 
       {/* 3. Legacy Tribute Collage */}
-      <FatherLegacy onStoryClick={handleReadFatherStory} />
+      <ScrollReveal>
+        <FatherLegacy onStoryClick={handleReadFatherStory} />
+      </ScrollReveal>
 
       <hr className="border-t border-cream-300/60 mx-auto max-w-7xl" />
 
       {/* 4. Journey Timeline */}
-      <TimelineSection 
-        timelineData={timeline} 
-        onActionClick={() => navigate('/about')} 
-      />
+      <ScrollReveal>
+        <TimelineSection 
+          timelineData={timeline} 
+          onActionClick={() => navigate('/about')} 
+        />
+      </ScrollReveal>
 
       <hr className="border-t border-cream-300/60 mx-auto max-w-7xl" />
 
       {/* 5. Audio Player Showcase */}
-      <WorksShowcase 
-        songs={songs}
-        currentSong={currentSong}
-        isPlaying={isPlaying}
-        onSongSelect={onSongSelect}
-        setIsPlaying={setIsPlaying}
-        onWorkClick={onWorkClick}
-      />
+      <ScrollReveal>
+        <WorksShowcase 
+          songs={songs}
+          currentSong={currentSong}
+          isPlaying={isPlaying}
+          onSongSelect={onSongSelect}
+          setIsPlaying={setIsPlaying}
+          onWorkClick={onWorkClick}
+        />
+      </ScrollReveal>
 
       <hr className="border-t border-cream-300/60 mx-auto max-w-7xl" />
 
       {/* 6. Photo Masonry Gallery */}
-      <GallerySection galleryItems={gallery} />
+      <ScrollReveal>
+        <GallerySection galleryItems={gallery} />
+      </ScrollReveal>
 
       <hr className="border-t border-cream-300/60 mx-auto max-w-7xl" />
 
       {/* 7. Blog Stories */}
-      <BlogSection blogs={blogs} />
+      <ScrollReveal>
+        <BlogSection blogs={blogs} />
+      </ScrollReveal>
 
       <hr className="border-t border-cream-300/60 mx-auto max-w-7xl" />
 
       {/* 8. Booking Contact Form */}
-      <ContactForm />
+      <ScrollReveal>
+        <ContactForm />
+      </ScrollReveal>
 
     </div>
   );

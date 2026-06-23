@@ -76,16 +76,31 @@ export default function GallerySection({ galleryItems = [] }) {
           <AnimatePresence mode="popLayout">
             {paginatedItems.map((item, idx) => {
               const globalIdx = startIndex + idx;
+              const slideX = idx % 2 === 0 ? -30 : 30;
+              const rotateVal = idx % 2 === 0 ? -2 : 2;
               return (
                 <motion.div
                   layout
-                  initial={{ opacity: 0, y: 15 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, scale: 0.9 }}
-                  transition={{ duration: 0.5 }}
+                  initial={{ opacity: 0, x: slideX, y: 30, rotate: rotateVal, scale: 0.95 }}
+                  whileInView={{ opacity: 1, x: 0, y: 0, rotate: 0, scale: 1 }}
+                  viewport={{ once: false, amount: 0.05 }}
+                  whileHover={{ 
+                    y: -6, 
+                    scale: 1.02,
+                    boxShadow: "0 15px 30px -10px rgba(179, 140, 38, 0.15)"
+                  }}
+                  whileTap={{ scale: 0.98 }}
+                  exit={{ opacity: 0, x: slideX, rotate: rotateVal, scale: 0.95 }}
+                  transition={{ 
+                    type: "spring",
+                    stiffness: 90,
+                    damping: 15,
+                    mass: 0.7,
+                    delay: (idx % 5) * 0.06
+                  }}
                   key={item._id}
                   onClick={() => setSelectedIdx(globalIdx)}
-                  className="relative aspect-[3/4] rounded overflow-hidden border border-cream-300 shadow-sm cursor-pointer group hover:border-gold-500/30 transition-all duration-500"
+                  className="relative aspect-[3/4] rounded overflow-hidden border border-cream-300 shadow-sm cursor-pointer group hover:border-gold-500/30"
                 >
                   {/* Image */}
                   <img 
