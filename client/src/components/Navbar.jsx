@@ -37,7 +37,14 @@ export default function Navbar({ activeSection, setActiveSection, currentPath, n
         {/* Logo Branding */}
         <div 
           className="cursor-pointer flex flex-col group text-left" 
-          onClick={() => { navigate('/'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+          onClick={() => { 
+            navigate('/'); 
+            if (window.lenis) {
+              window.lenis.scrollTo(0);
+            } else {
+              window.scrollTo({ top: 0, behavior: 'smooth' }); 
+            }
+          }}
         >
           <span className="font-script text-3.5xl md:text-4xl text-charcoal-900 group-hover:text-gold-600 transition-colors duration-300 leading-[0.8] tracking-normal select-none">
             Midhun Saji Ram
