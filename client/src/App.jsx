@@ -28,7 +28,7 @@ export default function App() {
   const [showPlayer, setShowPlayer] = useState(false);
   const [selectedWorkId, setSelectedWorkId] = useState(null);
 
-  const API_URL = 'http://localhost:5000/api';
+  const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
 
   // Path routing handler
   const navigate = (path) => {
