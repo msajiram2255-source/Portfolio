@@ -6,6 +6,7 @@ try {
   console.warn('Warning: Could not set DNS servers. Falling back to default system DNS.', e.message);
 }
 require('dotenv').config();
+require('./keepalive');
 const express = require('express');
 const path = require('path');
 
