@@ -3,7 +3,7 @@ import { Play, Pause, SkipForward, SkipBack, Volume2, VolumeX, Maximize2, Minimi
 import { FaSpotify, FaYoutube } from 'react-icons/fa';
 import { motion, AnimatePresence } from 'framer-motion';
 
-export default function AudioPlayer({ currentSong, songs, onSongSelect, isPlaying, setIsPlaying, onClose }) {
+export default function AudioPlayer({ currentSong, songs, onSongSelect, isPlaying, setIsPlaying, isLoading, setIsLoading, onClose }) {
   const [duration, setDuration] = useState(0);
   const [currentTime, setCurrentTime] = useState(0);
   const [volume, setVolume] = useState(0.8);
@@ -12,10 +12,23 @@ export default function AudioPlayer({ currentSong, songs, onSongSelect, isPlayin
   const [isMinimized, setIsMinimized] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   
+  const [isYtReady, setIsYtReady] = useState(false);
+  const ytPlayerRef = useRef(null);
+  
   const audioRef = useRef(null);
   const progressRef = useRef(null);
   const progressMobileRef = useRef(null);
   const animationRef = useRef(null);
+
+  const getYoutubeId = (url) => {
+    if (!url) return '';
+    const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+    const match = url.match(regExp);
+    return (match && match[2].length === 11) ? match[2] : '';
+  };
+
+  const ytId = getYoutubeId(currentSong?.audioUrl) || getYoutubeId(currentSong?.youtubeUrl);
+  const isYoutubeAudio = !!ytId;
 
   // Monitor screen resize for responsive triggers
   useEffect(() => {
@@ -27,24 +40,134 @@ export default function AudioPlayer({ currentSong, songs, onSongSelect, isPlayin
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // Initialize or change active song
+  // Dynamic initialization of YouTube Iframe Player
+  const initYtPlayer = () => {
+    if (ytPlayerRef.current) return;
+    
+    let playerDiv = document.getElementById('youtube-audio-player-element');
+    if (!playerDiv) {
+      playerDiv = document.createElement('div');
+      playerDiv.id = 'youtube-audio-player-element';
+      playerDiv.style.position = 'absolute';
+      playerDiv.style.width = '0px';
+      playerDiv.style.height = '0px';
+      playerDiv.style.opacity = '0';
+      playerDiv.style.pointerEvents = 'none';
+      document.body.appendChild(playerDiv);
+    }
+
+    try {
+      new window.YT.Player('youtube-audio-player-element', {
+        height: '0',
+        width: '0',
+        videoId: ytId,
+        playerVars: {
+          autoplay: 0,
+          controls: 0,
+          disablekb: 1,
+          fs: 0,
+          rel: 0,
+          showinfo: 0,
+          iv_load_policy: 3
+        },
+        events: {
+          onReady: (event) => {
+            ytPlayerRef.current = event.target;
+            setIsYtReady(true);
+            event.target.setVolume(isMuted ? 0 : volume * 100);
+            if (isPlaying) {
+              event.target.playVideo();
+            }
+          },
+          onStateChange: (event) => {
+            if (event.data === window.YT.PlayerState.PLAYING) {
+              setIsLoading(false);
+              setIsPlaying(true);
+              animationRef.current = requestAnimationFrame(whilePlaying);
+            } else if (event.data === window.YT.PlayerState.BUFFERING) {
+              setIsLoading(true);
+            } else if (event.data === window.YT.PlayerState.PAUSED) {
+              setIsPlaying(false);
+              cancelAnimationFrame(animationRef.current);
+            } else if (event.data === window.YT.PlayerState.ENDED) {
+              setIsPlaying(false);
+              cancelAnimationFrame(animationRef.current);
+              handleNext();
+            }
+          },
+          onError: (err) => {
+            console.error('YouTube Player Error:', err);
+            setIsLoading(false);
+            setIsPlaying(false);
+          }
+        }
+      });
+    } catch (e) {
+      console.error('Error creating YouTube player:', e);
+    }
+  };
+
+  useEffect(() => {
+    if (isYoutubeAudio && !window.YT) {
+      const tag = document.createElement('script');
+      tag.src = "https://www.youtube.com/iframe_api";
+      const firstScriptTag = document.getElementsByTagName('script')[0];
+      firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+      window.onYouTubeIframeAPIReady = () => {
+        initYtPlayer();
+      };
+    } else if (isYoutubeAudio && window.YT) {
+      initYtPlayer();
+    }
+  }, [isYoutubeAudio]);
+
+  useEffect(() => {
+    return () => {
+      const el = document.getElementById('youtube-audio-player-element');
+      if (el) el.remove();
+    };
+  }, []);
+
+  // Update YouTube Video on Song Change
+  useEffect(() => {
+    if (isYoutubeAudio && ytPlayerRef.current && isYtReady) {
+      setIsLoading(true);
+      ytPlayerRef.current.cueVideoById({ videoId: ytId });
+      if (isPlaying) {
+        ytPlayerRef.current.playVideo();
+      }
+    }
+  }, [currentSong, isYtReady, isYoutubeAudio, ytId]);
+
+  // Initialize or change active song (Native HTML5)
   useEffect(() => {
     if (!audioRef.current) {
       audioRef.current = new Audio();
     }
 
-    if (currentSong) {
+    if (currentSong && !isYoutubeAudio) {
+      if (ytPlayerRef.current && typeof ytPlayerRef.current.pauseVideo === 'function') {
+        ytPlayerRef.current.pauseVideo();
+      }
+
+      setIsLoading(true);
       audioRef.current.src = currentSong.audioUrl;
       audioRef.current.load();
       
-      // Auto play on select
       if (isPlaying) {
         audioRef.current.play()
           .then(() => {
             animationRef.current = requestAnimationFrame(whilePlaying);
           })
-          .catch(err => console.log('Audio autoplay blocked:', err));
+          .catch(err => {
+            console.log('Audio autoplay blocked:', err);
+            setIsPlaying(false);
+            setIsLoading(false);
+          });
       }
+    } else {
+      audioRef.current.pause();
     }
 
     return () => {
@@ -53,23 +176,44 @@ export default function AudioPlayer({ currentSong, songs, onSongSelect, isPlayin
         cancelAnimationFrame(animationRef.current);
       }
     };
-  }, [currentSong]);
+  }, [currentSong, isYoutubeAudio]);
 
   // Sync play/pause controls
   useEffect(() => {
-    if (!audioRef.current || !currentSong) return;
-
-    if (isPlaying) {
-      audioRef.current.play()
-        .then(() => {
-          animationRef.current = requestAnimationFrame(whilePlaying);
-        })
-        .catch(err => console.log('Play failed:', err));
+    if (isYoutubeAudio) {
+      if (audioRef.current) {
+        audioRef.current.pause();
+      }
+      if (ytPlayerRef.current && isYtReady) {
+        if (isPlaying) {
+          setIsLoading(true);
+          ytPlayerRef.current.playVideo();
+        } else {
+          ytPlayerRef.current.pauseVideo();
+        }
+      }
     } else {
-      audioRef.current.pause();
-      cancelAnimationFrame(animationRef.current);
+      if (ytPlayerRef.current && typeof ytPlayerRef.current.pauseVideo === 'function') {
+        ytPlayerRef.current.pauseVideo();
+      }
+
+      if (!audioRef.current || !currentSong) return;
+
+      if (isPlaying) {
+        audioRef.current.play()
+          .then(() => {
+            animationRef.current = requestAnimationFrame(whilePlaying);
+          })
+          .catch(err => {
+            console.log('Play failed:', err);
+            setIsPlaying(false);
+          });
+      } else {
+        audioRef.current.pause();
+        cancelAnimationFrame(animationRef.current);
+      }
     }
-  }, [isPlaying]);
+  }, [isPlaying, isYoutubeAudio, isYtReady]);
 
   // Handle HTML audio events
   useEffect(() => {
@@ -88,14 +232,33 @@ export default function AudioPlayer({ currentSong, songs, onSongSelect, isPlayin
       handleNext();
     };
 
+    const onLoadStart = () => setIsLoading(true);
+    const onWaiting = () => setIsLoading(true);
+    const onPlaying = () => setIsLoading(false);
+    const onCanPlay = () => setIsLoading(false);
+    const onPause = () => setIsLoading(false);
+    const onError = () => setIsLoading(false);
+
     audio.addEventListener('loadedmetadata', onLoadedMetadata);
     audio.addEventListener('timeupdate', onTimeUpdate);
     audio.addEventListener('ended', onAudioEnded);
+    audio.addEventListener('loadstart', onLoadStart);
+    audio.addEventListener('waiting', onWaiting);
+    audio.addEventListener('playing', onPlaying);
+    audio.addEventListener('canplay', onCanPlay);
+    audio.addEventListener('pause', onPause);
+    audio.addEventListener('error', onError);
 
     return () => {
       audio.removeEventListener('loadedmetadata', onLoadedMetadata);
       audio.removeEventListener('timeupdate', onTimeUpdate);
       audio.removeEventListener('ended', onAudioEnded);
+      audio.removeEventListener('loadstart', onLoadStart);
+      audio.removeEventListener('waiting', onWaiting);
+      audio.removeEventListener('playing', onPlaying);
+      audio.removeEventListener('canplay', onCanPlay);
+      audio.removeEventListener('pause', onPause);
+      audio.removeEventListener('error', onError);
     };
   }, [currentSong]);
 
@@ -104,11 +267,23 @@ export default function AudioPlayer({ currentSong, songs, onSongSelect, isPlayin
     if (audioRef.current) {
       audioRef.current.volume = isMuted ? 0 : volume;
     }
-  }, [volume, isMuted]);
+    if (ytPlayerRef.current && typeof ytPlayerRef.current.setVolume === 'function') {
+      ytPlayerRef.current.setVolume(isMuted ? 0 : volume * 100);
+    }
+  }, [volume, isMuted, isYoutubeAudio]);
 
   const whilePlaying = () => {
-    if (!audioRef.current) return;
-    setCurrentTime(audioRef.current.currentTime);
+    if (isYoutubeAudio) {
+      if (ytPlayerRef.current && typeof ytPlayerRef.current.getCurrentTime === 'function') {
+        const current = ytPlayerRef.current.getCurrentTime();
+        const dur = ytPlayerRef.current.getDuration();
+        setCurrentTime(current);
+        if (dur) setDuration(dur);
+      }
+    } else {
+      if (!audioRef.current) return;
+      setCurrentTime(audioRef.current.currentTime);
+    }
     animationRef.current = requestAnimationFrame(whilePlaying);
   };
 
@@ -122,15 +297,24 @@ export default function AudioPlayer({ currentSong, songs, onSongSelect, isPlayin
   };
 
   const handleSeekOffset = (clientX, progressElement) => {
-    if (!audioRef.current || !duration || !progressElement) return;
+    if (!duration || !progressElement) return;
     const rect = progressElement.getBoundingClientRect();
     const clickX = clientX - rect.left;
     const width = rect.width;
     const percentage = Math.max(0, Math.min(1, clickX / width));
     const seekTime = percentage * duration;
     
-    audioRef.current.currentTime = seekTime;
-    setCurrentTime(seekTime);
+    if (isYoutubeAudio) {
+      if (ytPlayerRef.current && typeof ytPlayerRef.current.seekTo === 'function') {
+        ytPlayerRef.current.seekTo(seekTime, true);
+        setCurrentTime(seekTime);
+      }
+    } else {
+      if (audioRef.current) {
+        audioRef.current.currentTime = seekTime;
+        setCurrentTime(seekTime);
+      }
+    }
   };
 
   const handleSeek = (e) => {
@@ -384,11 +568,18 @@ export default function AudioPlayer({ currentSong, songs, onSongSelect, isPlayin
               
               <button 
                 onClick={handlePlayPause}
-                className="w-10 h-10 rounded-full bg-gold-500 hover:bg-gold-400 text-black flex items-center justify-center transition-all duration-300 shadow-[0_0_15px_rgba(37,99,235,0.35)] hover:scale-105 relative cursor-pointer group"
-                title={isPlaying ? "Pause" : "Play Preview"}
+                disabled={isLoading}
+                className="w-10 h-10 rounded-full bg-gold-500 hover:bg-gold-400 disabled:bg-gold-500/80 text-black flex items-center justify-center transition-all duration-300 shadow-[0_0_15px_rgba(37,99,235,0.35)] hover:scale-105 relative cursor-pointer group"
+                title={isLoading ? "Buffering..." : (isPlaying ? "Pause" : "Play Preview")}
               >
                 <div className="absolute inset-0 rounded-full border border-black/10 scale-90"></div>
-                {isPlaying ? <Pause size={17} fill="black" /> : <Play size={17} fill="black" className="ml-0.5" />}
+                {isLoading ? (
+                  <span className="w-4 h-4 border-2 border-black border-t-transparent rounded-full animate-spin"></span>
+                ) : isPlaying ? (
+                  <Pause size={17} fill="black" />
+                ) : (
+                  <Play size={17} fill="black" className="ml-0.5" />
+                )}
               </button>
               
               <button 
@@ -429,10 +620,17 @@ export default function AudioPlayer({ currentSong, songs, onSongSelect, isPlayin
             {/* Mobile Play Button */}
             <button 
               onClick={handlePlayPause}
-              className="md:hidden w-8 h-8 rounded-full bg-gold-500 text-black flex items-center justify-center transition-all duration-300 shadow-sm mr-2 flex-shrink-0"
-              title={isPlaying ? "Pause" : "Play"}
+              disabled={isLoading}
+              className="md:hidden w-8 h-8 rounded-full bg-gold-500 disabled:bg-gold-500/80 text-black flex items-center justify-center transition-all duration-300 shadow-sm mr-2 flex-shrink-0"
+              title={isLoading ? "Buffering..." : (isPlaying ? "Pause" : "Play")}
             >
-              {isPlaying ? <Pause size={14} fill="black" /> : <Play size={14} fill="black" className="ml-0.5" />}
+              {isLoading ? (
+                <span className="w-3.5 h-3.5 border-2 border-black border-t-transparent rounded-full animate-spin"></span>
+              ) : isPlaying ? (
+                <Pause size={14} fill="black" />
+              ) : (
+                <Play size={14} fill="black" className="ml-0.5" />
+              )}
             </button>
 
             {/* Volume controls (Desktop only) */}

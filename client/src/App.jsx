@@ -22,6 +22,7 @@ export default function App() {
   const [songs, setSongs] = useState([]);
   const [currentSong, setCurrentSong] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [isAudioLoading, setIsAudioLoading] = useState(false);
 
   // Global Content States
   const [blogs, setBlogs] = useState([]);
@@ -274,6 +275,7 @@ export default function App() {
                   navigate(`/work-detail?id=${song._id}`);
                 }}
                 loading={loading}
+                isAudioLoading={isAudioLoading}
               />
             );
           case '/work-detail':
@@ -295,6 +297,7 @@ export default function App() {
                 currentSong={currentSong}
                 isPlaying={isPlaying}
                 loading={loading}
+                isAudioLoading={isAudioLoading}
               />
             );
           case '/blog':
@@ -324,6 +327,7 @@ export default function App() {
                 }}
                 loading={loading}
                 siteContent={siteContent}
+                isAudioLoading={isAudioLoading}
               />
             );
         }
@@ -439,6 +443,8 @@ export default function App() {
             onSongSelect={setCurrentSong}
             isPlaying={isPlaying}
             setIsPlaying={setIsPlaying}
+            isLoading={isAudioLoading}
+            setIsLoading={setIsAudioLoading}
             onClose={() => {
               setIsPlaying(false);
               setShowPlayer(false);

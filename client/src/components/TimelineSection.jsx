@@ -100,25 +100,25 @@ export default function TimelineSection({ timelineData, onActionClick, loading }
       year: '1998', 
       title: 'Where it all began', 
       description: 'Surrounded by music, instruments and endless curiosity.',
-      image: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=400'
+      image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300" viewBox="0 0 400 300"><rect width="100%" height="100%" fill="%23faf8f5"/><rect x="10" y="10" width="380" height="280" fill="none" stroke="%23ebd8be" stroke-width="1"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-family="serif" font-size="16" font-style="italic" fill="%23cca647">1998 Milestone</text></svg>'
     },
     { 
       year: '2008', 
       title: 'Learning. Observing. Absorbing.', 
       description: 'Learning not just music, but emotion, discipline and silence.',
-      image: 'https://images.unsplash.com/photo-1511379938547-c1f69419868d?q=80&w=400'
+      image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300" viewBox="0 0 400 300"><rect width="100%" height="100%" fill="%23faf8f5"/><rect x="10" y="10" width="380" height="280" fill="none" stroke="%23ebd8be" stroke-width="1"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-family="serif" font-size="16" font-style="italic" fill="%23cca647">2008 Milestone</text></svg>'
     },
     { 
       year: '2016', 
       title: 'Finding my voice', 
       description: 'Stepping into studios, compositions and my own sound.',
-      image: 'https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?q=80&w=400'
+      image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300" viewBox="0 0 400 300"><rect width="100%" height="100%" fill="%23faf8f5"/><rect x="10" y="10" width="380" height="280" fill="none" stroke="%23ebd8be" stroke-width="1"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-family="serif" font-size="16" font-style="italic" fill="%23cca647">2016 Milestone</text></svg>'
     },
     { 
       year: '2023', 
       title: 'Creating. Performing. Inspiring.', 
       description: 'Continuing the legacy and building a new musical tomorrow.',
-      image: 'https://images.unsplash.com/photo-1501386761578-eac5c94b800a?q=80&w=400'
+      image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300" viewBox="0 0 400 300"><rect width="100%" height="100%" fill="%23faf8f5"/><rect x="10" y="10" width="380" height="280" fill="none" stroke="%23ebd8be" stroke-width="1"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-family="serif" font-size="16" font-style="italic" fill="%23cca647">2023 Milestone</text></svg>'
     }
   ];
 
@@ -127,10 +127,10 @@ export default function TimelineSection({ timelineData, onActionClick, loading }
 
   // Music fallbacks for indexing if CMS timeline data is loaded dynamically
   const fallbacks = [
-    'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=400',
-    'https://images.unsplash.com/photo-1511379938547-c1f69419868d?q=80&w=400',
-    'https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?q=80&w=400',
-    'https://images.unsplash.com/photo-1501386761578-eac5c94b800a?q=80&w=400'
+    'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300" viewBox="0 0 400 300"><rect width="100%" height="100%" fill="%23faf8f5"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-family="serif" font-size="14" fill="%23cca647">Milestone Point</text></svg>',
+    'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300" viewBox="0 0 400 300"><rect width="100%" height="100%" fill="%23faf8f5"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-family="serif" font-size="14" fill="%23cca647">Milestone Point</text></svg>',
+    'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300" viewBox="0 0 400 300"><rect width="100%" height="100%" fill="%23faf8f5"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-family="serif" font-size="14" fill="%23cca647">Milestone Point</text></svg>',
+    'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300" viewBox="0 0 400 300"><rect width="100%" height="100%" fill="%23faf8f5"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-family="serif" font-size="14" fill="%23cca647">Milestone Point</text></svg>'
   ];
 
   return (

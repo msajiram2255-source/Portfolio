@@ -32,7 +32,8 @@ export default function Home({
   onSelectCategory,
   onWorkClick,
   loading,
-  siteContent = {}
+  siteContent = {},
+  isAudioLoading
 }) {
   const [activeVideo, setActiveVideo] = useState(null); // { id, mediaType, url }
   const [activeLightboxImage, setActiveLightboxImage] = useState(null); // url
@@ -57,8 +58,12 @@ export default function Home({
 
   const handleListenNow = () => {
     if (songs && songs.length > 0) {
-      onSongSelect(songs[0]);
-      setIsPlaying(true);
+      if (isPlaying) {
+        setIsPlaying(false);
+      } else {
+        onSongSelect(currentSong || songs[0]);
+        setIsPlaying(true);
+      }
     }
   };
 
@@ -247,6 +252,7 @@ export default function Home({
         onPlayClick={handleListenNow} 
         onExploreClick={handleExploreWorks}
         content={siteContent.hero}
+        isPlaying={isPlaying}
       />
 
       <hr className="border-t border-cream-300/60 mx-auto max-w-7xl" />

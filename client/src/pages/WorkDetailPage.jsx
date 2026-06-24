@@ -3,7 +3,7 @@ import { ArrowLeft, Play, Pause, Music, Mic, PenTool, Sliders, Home as HomeIcon,
 import { FaSpotify, FaYoutube } from 'react-icons/fa';
 import { motion } from 'framer-motion';
 
-export default function WorkDetailPage({ song, onBackClick, onPlayClick, currentSong, isPlaying, loading }) {
+export default function WorkDetailPage({ song, onBackClick, onPlayClick, currentSong, isPlaying, loading, isAudioLoading }) {
   const [copied, setCopied] = useState(false);
 
   if (loading || !song) {
@@ -65,6 +65,7 @@ export default function WorkDetailPage({ song, onBackClick, onPlayClick, current
 
   const isCurrent = currentSong && currentSong._id === song._id;
   const isCurrentPlaying = isCurrent && isPlaying;
+  const isCurrentLoading = isCurrent && isAudioLoading;
 
   // Credits matching Midhun Saji Ram's editorial styling
   const credits = {
@@ -197,9 +198,12 @@ export default function WorkDetailPage({ song, onBackClick, onPlayClick, current
             <div className="bg-white border border-cream-300 p-4 rounded flex items-center justify-between shadow-sm mb-6">
               <button
                 onClick={() => onPlayClick(song)}
-                className="w-11 h-11 rounded bg-gold-500 hover:bg-gold-600 text-white flex items-center justify-center transition-all duration-300 shadow-md cursor-pointer flex-shrink-0"
+                disabled={isCurrentLoading}
+                className="w-11 h-11 rounded bg-gold-500 hover:bg-gold-600 disabled:bg-gold-500/80 text-white flex items-center justify-center transition-all duration-300 shadow-md cursor-pointer flex-shrink-0"
               >
-                {isCurrentPlaying ? (
+                {isCurrentLoading ? (
+                  <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+                ) : isCurrentPlaying ? (
                   <Pause size={16} fill="currentColor" />
                 ) : (
                   <Play size={16} fill="currentColor" className="ml-0.5" />

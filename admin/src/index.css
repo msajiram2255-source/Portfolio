@@ -2,16 +2,16 @@
 @import "tailwindcss";
 
 @theme {
-  --color-gold-50: #f0f7ff;
-  --color-gold-100: #e0f2fe;
-  --color-gold-200: #bae6fd;
-  --color-gold-300: #7dd3fc;
-  --color-gold-400: #38bdf8;
-  --color-gold-500: #2563eb; /* Primary Electric Blue */
-  --color-gold-600: #1d4ed8;
-  --color-gold-700: #1e40af;
-  --color-gold-800: #1e3a8a;
-  --color-gold-900: #172554;
+  --color-gold-50: #faf8f2;
+  --color-gold-100: #f3eccf;
+  --color-gold-200: #e7d7a2;
+  --color-gold-300: #dac071;
+  --color-gold-400: #cca647;
+  --color-gold-500: #b89033; /* Primary Gold Accent */
+  --color-gold-600: #9c7929;
+  --color-gold-700: #7f6120;
+  --color-gold-800: #614918;
+  --color-gold-900: #423110;
   
   --color-obsidian-950: #ffffff; /* Pure White Background */
   --color-obsidian-900: #f8fafc; /* Stark Ultra Light Card Background */
@@ -26,7 +26,7 @@
   --color-obsidian-200: #1e293b;
   --color-obsidian-100: #0f172a; /* Stark slate-900 text color */
   
-  --color-gold-glow: rgba(37, 99, 235, 0.04);
+  --color-gold-glow: rgba(184, 144, 51, 0.04);
 
   --font-serif: "Outfit", "Inter", sans-serif;
   --font-sans: "Inter", system-ui, sans-serif;
@@ -60,7 +60,7 @@ body {
   border-radius: 3px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #2563eb;
+  background: var(--color-gold-500);
 }
 
 /* Glass panel */
@@ -68,11 +68,11 @@ body {
   background: rgba(255, 255, 255, 0.75);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(37, 99, 235, 0.08);
+  border: 1px solid var(--color-gold-300);
 }
 
 .text-gold-gradient {
-  background: linear-gradient(135deg, #0f172a 0%, #2563eb 50%, #1d4ed8 100%);
+  background: linear-gradient(135deg, #0f172a 0%, #b89033 50%, #9c7929 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -80,12 +80,12 @@ body {
 
 .glow-card {
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.03);
-  border: 1px solid rgba(37, 99, 235, 0.06);
+  border: 1px solid rgba(184, 144, 51, 0.06);
 }
 
 .glow-card-active {
-  border-color: rgba(37, 99, 235, 0.25);
-  box-shadow: 0 0 25px rgba(37, 99, 235, 0.04);
+  border-color: rgba(184, 144, 51, 0.25);
+  box-shadow: 0 0 25px rgba(184, 144, 51, 0.04);
 }
 
 /* Dynamic audio bars preview for dashboard sidebar */
@@ -93,7 +93,7 @@ body {
   display: inline-block;
   width: 2.5px;
   height: 2px;
-  background-color: #2563eb;
+  background-color: var(--color-gold-500);
   margin: 0 1px;
   border-radius: 1px;
 }

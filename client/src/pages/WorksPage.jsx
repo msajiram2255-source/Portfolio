@@ -18,7 +18,8 @@ export default function WorksPage({
   onSongSelect, 
   setIsPlaying, 
   onWorkClick,
-  loading
+  loading,
+  isAudioLoading
 }) {
   const [activeVideo, setActiveVideo] = useState(null); // { id, mediaType, url }
   const [activeLightboxImage, setActiveLightboxImage] = useState(null); // url
@@ -313,6 +314,7 @@ export default function WorksPage({
             activeFilter={activeAudioFilter}
             setActiveFilter={setActiveAudioFilter}
             loading={loading}
+            isAudioLoading={isAudioLoading}
           />
         )}
         {worksCategory === 'short_film' && (

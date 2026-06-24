@@ -11,7 +11,8 @@ export default function WorksShowcase({
   onWorkClick,
   activeFilter,
   setActiveFilter,
-  loading
+  loading,
+  isAudioLoading
 }) {
   const [localFilter, setLocalFilter] = useState('All');
 
@@ -108,6 +109,7 @@ export default function WorksShowcase({
               {displaySongs.map((song, index) => {
                 const isCurrent = currentSong && currentSong._id === song._id;
                 const isCurrentPlaying = isCurrent && isPlaying;
+                const isCurrentLoading = isCurrent && isAudioLoading;
                 const slideX = index % 2 === 0 ? -40 : 40;
                 const rotateVal = index % 2 === 0 ? -3 : 3;
 
@@ -152,14 +154,17 @@ export default function WorksShowcase({
                           {/* Compact Play/Pause Music Icon Button next to title */}
                           <button
                             onClick={(e) => handlePlayToggle(e, song)}
+                            disabled={isCurrentLoading}
                             className={`w-5.5 h-5.5 rounded flex items-center justify-center transition-all duration-300 flex-shrink-0 cursor-pointer border ${
                               isCurrentPlaying
                                 ? 'bg-gold-500 border-gold-500 text-charcoal-900 shadow-sm'
                                 : 'bg-cream-100 hover:bg-gold-500 border-charcoal-900/10 hover:border-gold-500 text-charcoal-900 hover:text-charcoal-900'
                             }`}
-                            title={isCurrentPlaying ? "Pause preview" : "Play preview"}
+                            title={isCurrentLoading ? "Buffering..." : (isCurrentPlaying ? "Pause Music" : "Play Music")}
                           >
-                            {isCurrentPlaying ? (
+                            {isCurrentLoading ? (
+                              <span className="w-2.5 h-2.5 border border-charcoal-900 border-t-transparent rounded-full animate-spin"></span>
+                            ) : isCurrentPlaying ? (
                               <Pause size={9} fill="currentColor" />
                             ) : (
                               <Play size={9} fill="currentColor" className="ml-[0.5px]" />

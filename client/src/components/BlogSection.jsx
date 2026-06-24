@@ -191,7 +191,7 @@ export default function BlogSection({ blogs, loading }) {
                 <div className="flex items-center space-x-3 text-left">
                   <div className="w-10 h-10 rounded-full border border-gold-500/20 overflow-hidden bg-neutral-200">
                     <img 
-                      src="https://images.unsplash.com/photo-1510915228340-29c85a43dcfe?q=80&w=200" 
+                      src="data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"100\" height=\"100\" viewBox=\"0 0 100 100\"><rect width=\"100%\" height=\"100%\" fill=\"%23b89033\"/><text x=\"50%\" y=\"55%\" dominant-baseline=\"middle\" text-anchor=\"middle\" font-family=\"serif\" font-size=\"40\" font-weight=\"bold\" fill=\"%23ffffff\">M</text></svg>" 
                       alt="Midhun Saji Ram" 
                       className="w-full h-full object-cover"
                     />

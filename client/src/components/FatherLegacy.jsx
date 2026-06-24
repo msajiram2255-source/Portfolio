@@ -22,8 +22,8 @@ export default function FatherLegacy({ onStoryClick, content }) {
             {/* Background frame (Older Saji Ram writing) */}
             <div className="relative w-[72%] aspect-[1.2/1] bg-[#111a2e] border border-white/10 p-2.5 shadow-2xl rounded z-10">
               <div className="w-full h-full overflow-hidden bg-black rounded">
-                <img
-                  src={c.mainImage || "https://images.unsplash.com/photo-1610964198883-01c0c61e08cb?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTJ8fG11c2ljJTIwYXJ0aXN0JTIwYWdlZHxlbnwwfHwwfHx8MA%3D%3D"}
+                 <img
+                  src={c.mainImage || "data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"600\" height=\"400\" viewBox=\"0 0 600 400\"><rect width=\"100%\" height=\"100%\" fill=\"%23111a2e\"/><text x=\"50%\" y=\"50%\" dominant-baseline=\"middle\" text-anchor=\"middle\" font-family=\"serif\" font-size=\"20\" fill=\"%23cca647\">SAJI RAM COMPOSITIONS</text></svg>"}
                   alt="Saji Ram composing at desk"
                   className="w-full h-full object-cover filter grayscale contrast-[1.1] brightness-[0.88] opacity-90"
                 />
@@ -37,7 +37,7 @@ export default function FatherLegacy({ onStoryClick, content }) {
             >
               <div className="w-full h-[84%] overflow-hidden bg-neutral-800 rounded">
                 <img
-                  src={c.polaroidImage || "https://plus.unsplash.com/premium_photo-1726804910786-9e72710480d3?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8bXVzaWMlMjBhcnRpc3QlMjBhZ2VkfGVufDB8fDB8fHww"}
+                  src={c.polaroidImage || "data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"600\" height=\"600\" viewBox=\"0 0 600 600\"><rect width=\"100%\" height=\"100%\" fill=\"%23fafafa\"/><rect x=\"40\" y=\"40\" width=\"520\" height=\"450\" fill=\"%23ebd8be\" opacity=\"0.3\"/><text x=\"50%\" y=\"90%\" dominant-baseline=\"middle\" text-anchor=\"middle\" font-family=\"serif\" font-size=\"18\" fill=\"%234a3e2c\">Saji Ram Portrait</text></svg>"}
                   alt="Saji Ram portrait"
                   className="w-full h-full object-cover filter sepia-[0.15] brightness-[0.95] contrast-[1.05]"
                 />

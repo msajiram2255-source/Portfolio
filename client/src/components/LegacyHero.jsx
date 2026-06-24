@@ -1,8 +1,8 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Play, ArrowRight, Quote } from 'lucide-react';
+import { Play, Pause, ArrowRight, Quote } from 'lucide-react';
 
-export default function LegacyHero({ onPlayClick, onExploreClick, content }) {
+export default function LegacyHero({ onPlayClick, onExploreClick, content, isPlaying }) {
   const c = content || {};
   
   return (
@@ -70,9 +70,13 @@ export default function LegacyHero({ onPlayClick, onExploreClick, content }) {
               className="px-6 py-3 bg-white text-black hover:bg-gold-500 hover:text-black font-semibold text-[10px] uppercase tracking-widest rounded-full transition-all duration-300 flex items-center justify-center space-x-3 cursor-pointer shadow-sm"
             >
               <div className="w-5 h-5 rounded-full border border-black/10 flex items-center justify-center flex-shrink-0 group-hover:border-black/20">
-                <Play size={8} fill="currentColor" className="ml-0.5" />
+                {isPlaying ? (
+                  <Pause size={8} fill="currentColor" />
+                ) : (
+                  <Play size={8} fill="currentColor" className="ml-0.5" />
+                )}
               </div>
-              <span>Listen Now</span>
+              <span>{isPlaying ? 'Pause Music' : 'Listen Now'}</span>
             </button>
             
             <button
