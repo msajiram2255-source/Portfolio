@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import ShinyText from './ShinyText';
 import { Mail, Phone, MapPin, Send } from 'lucide-react';
 import { FaInstagram, FaYoutube, FaSpotify } from 'react-icons/fa';
 import confetti from 'canvas-confetti';
@@ -69,8 +70,10 @@ export default function ContactForm() {
                   Get In Touch
                 </span>
                 <h2 className="font-outfit text-3xl md:text-4xl font-black tracking-tight text-charcoal-900 leading-tight">
-                  Let's Connect <br />
-                  <span className="text-gold-gradient italic font-normal">Something Beautiful.</span>
+                  <ShinyText text="Let's Connect" speed={3} /> <br />
+                  <span className="text-gold-gradient italic font-normal">
+                    <ShinyText text="Something Beautiful." color="#b89033" shineColor="#ffffff" speed={3} />
+                  </span>
                 </h2>
               </div>
               
@@ -139,7 +142,7 @@ export default function ContactForm() {
           </div>
 
           {/* Right Column: Sleek minimal form */}
-          <div className="lg:col-span-7 bg-cream-100/40 border border-cream-300/50 p-6 sm:p-8 rounded text-left">
+          <div className="lg:col-span-7 border border-cream-300/50 p-6 sm:p-8 rounded text-left">
             <form onSubmit={handleSubmit} className="space-y-5 text-left relative">
               <div className="border-b border-cream-200 pb-3 mb-2 flex items-center justify-between">
                 <h3 className="font-outfit text-xs uppercase tracking-widest font-black text-charcoal-900">Send an Inquiry</h3>

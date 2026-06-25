@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, Sun, Moon } from 'lucide-react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { FaInstagram, FaYoutube, FaSpotify } from 'react-icons/fa';
 
-export default function Navbar({ activeSection, setActiveSection, currentPath, navigate, onSelectCategory }) {
+export default function Navbar({ activeSection, setActiveSection, currentPath, navigate, onSelectCategory, theme, toggleTheme }) {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
@@ -84,6 +84,19 @@ export default function Navbar({ activeSection, setActiveSection, currentPath, n
             <a href="https://spotify.com" target="_blank" rel="noopener noreferrer" className="hover:text-gold-500 transition-colors duration-300"><FaSpotify size={18} /></a>
           </div>
 
+          {/* Theme Toggle Button */}
+          <button
+            onClick={toggleTheme}
+            className={`p-1.5 rounded-full hover:bg-gold-500/10 hover:text-gold-500 transition-all duration-300 active:scale-95 cursor-pointer flex items-center justify-center ${showSolidNavbar ? 'text-charcoal-900' : 'text-white'}`}
+            aria-label="Toggle Theme"
+          >
+            {theme === 'dark' ? (
+              <Sun className="w-[18px] h-[18px] transition-transform duration-300 hover:rotate-45" />
+            ) : (
+              <Moon className="w-[18px] h-[18px] transition-transform duration-300 hover:-rotate-12" />
+            )}
+          </button>
+
           <button 
             onClick={() => setIsOpen(true)}
             className={`lg:hidden transition-colors duration-300 hover:text-gold-500 cursor-pointer ${showSolidNavbar ? 'text-charcoal-900' : 'text-white'}`}
@@ -117,7 +130,18 @@ export default function Navbar({ activeSection, setActiveSection, currentPath, n
             >
               {/* Drawer Header with Close Button */}
               <div className="flex items-center justify-between mb-8 pb-4 border-b border-cream-300/40">
-                <span className="font-serif font-extrabold tracking-widest text-sm uppercase text-charcoal-900">Menu</span>
+                <div className="flex items-center space-x-3">
+                  <span className="font-serif font-extrabold tracking-widest text-sm uppercase text-charcoal-900">Menu</span>
+                  
+                  {/* Theme Toggle in Mobile Drawer */}
+                  <button
+                    onClick={toggleTheme}
+                    className="p-1 rounded-full text-charcoal-900 hover:text-gold-600 transition-colors cursor-pointer flex items-center justify-center"
+                    aria-label="Toggle Theme"
+                  >
+                    {theme === 'dark' ? <Sun size={16} /> : <Moon size={16} />}
+                  </button>
+                </div>
                 <button 
                   onClick={() => setIsOpen(false)}
                   className="text-charcoal-900 hover:text-gold-500 transition-colors cursor-pointer"

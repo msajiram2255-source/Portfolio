@@ -1,5 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import ShinyText from './ShinyText';
 import { Award, Music, Users, Heart, ArrowRight } from 'lucide-react';
 
 const iconMap = {
@@ -50,7 +51,7 @@ export default function AboutSection({ onActionClick, content }) {
               <h2 className="font-serif text-charcoal-900 text-3.5xl md:text-5xl tracking-tight leading-[1.1] font-light">
                 {titleLines.map((line, i) => (
                   <React.Fragment key={i}>
-                    {line}
+                    <ShinyText text={line} speed={3} />
                     {i < titleLines.length - 1 && <br />}
                   </React.Fragment>
                 ))}

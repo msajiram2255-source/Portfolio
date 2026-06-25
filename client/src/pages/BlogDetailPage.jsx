@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { ArrowLeft, Clock, Eye, Share2 } from 'lucide-react';
 import { motion } from 'framer-motion';
+import ShinyText from '../components/ShinyText';
 
 export default function BlogDetailPage({ blog, onBackClick, loading }) {
   const [copied, setCopied] = useState(false);
@@ -119,7 +120,7 @@ export default function BlogDetailPage({ blog, onBackClick, loading }) {
           {/* Headline details & Meta */}
           <div className="p-6 md:p-10 pb-0 text-left">
             <h1 className="font-serif text-2xl md:text-4xl text-charcoal-900 font-extrabold tracking-tight mb-4 leading-tight">
-              {blog.title}
+              <ShinyText text={blog.title} speed={3} />
             </h1>
             <div className="flex flex-wrap items-center gap-2.5 text-[10px] text-gray-500 uppercase tracking-widest font-mono border-b border-cream-300 pb-5">
               <span>{new Date(blog.createdAt).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</span>

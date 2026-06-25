@@ -7,6 +7,7 @@ import WebSeriesSection from '../components/WebSeriesSection';
 import TvProgramsSection from '../components/TvProgramsSection';
 import MoviesSection from '../components/MoviesSection';
 import IndependentWorksSection from '../components/IndependentWorksSection';
+import ShinyText from '../components/ShinyText';
 
 export default function WorksPage({ 
   songs, 
@@ -256,7 +257,7 @@ export default function WorksPage({
             Browse Portfolio
           </span>
           <h1 className="font-serif text-2xl md:text-3xl font-black text-charcoal-900 leading-none">
-            Creative Composition Works
+            <ShinyText text="Creative Composition Works" speed={3} />
           </h1>
         </div>
 

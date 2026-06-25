@@ -18,6 +18,61 @@ import { FaSpotify, FaYoutube, FaInstagram } from 'react-icons/fa';
 export default function App() {
   const [currentPath, setCurrentPath] = useState(window.location.pathname);
   const [activeSection, setActiveSection] = useState('home');
+  const [theme, setTheme] = useState(() => {
+    return localStorage.getItem('theme') || 'light';
+  });
+
+  useEffect(() => {
+    const root = document.documentElement;
+    if (theme === 'dark') {
+      root.classList.add('dark');
+    } else {
+      root.classList.remove('dark');
+    }
+    localStorage.setItem('theme', theme);
+  }, [theme]);
+
+  const toggleTheme = (event) => {
+    const nextTheme = theme === 'dark' ? 'light' : 'dark';
+
+    if (!document.startViewTransition) {
+      setTheme(nextTheme);
+      return;
+    }
+
+    const x = event?.clientX ?? window.innerWidth / 2;
+    const y = event?.clientY ?? window.innerHeight / 2;
+
+    const endRadius = Math.hypot(
+      Math.max(x, window.innerWidth - x),
+      Math.max(y, window.innerHeight - y)
+    );
+
+    const transition = document.startViewTransition(() => {
+      setTheme(nextTheme);
+    });
+
+    transition.ready.then(() => {
+      const isNextDark = nextTheme === 'dark';
+      const clipPath = [
+        `circle(0px at ${x}px ${y}px)`,
+        `circle(${endRadius}px at ${x}px ${y}px)`
+      ];
+
+      document.documentElement.animate(
+        {
+          clipPath: isNextDark ? clipPath : [...clipPath].reverse()
+        },
+        {
+          duration: 600,
+          easing: 'ease-in-out',
+          pseudoElement: isNextDark
+            ? '::view-transition-new(root)'
+            : '::view-transition-old(root)'
+        }
+      );
+    });
+  };
 
   // Global Audio States
   const [songs, setSongs] = useState([]);
@@ -245,6 +300,8 @@ export default function App() {
         currentPath={currentPath}
         navigate={navigate}
         onSelectCategory={setWorksCategory}
+        theme={theme}
+        toggleTheme={toggleTheme}
       />
 
       {/* Main Portfolio Content */}

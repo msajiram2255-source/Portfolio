@@ -1,7 +1,9 @@
-import React, { useRef } from 'react';
-import { motion, useScroll, useSpring, useTransform } from 'framer-motion';
+import React, { useRef, useState } from 'react';
+import { motion, AnimatePresence, useScroll, useSpring, useTransform } from 'framer-motion';
+import ShinyText from './ShinyText';
 
 export default function TimelineSection({ timelineData, onActionClick, loading }) {
+  const [activeEventIdx, setActiveEventIdx] = useState(0);
   const containerRef = useRef(null);
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -28,7 +30,7 @@ export default function TimelineSection({ timelineData, onActionClick, loading }
                 THE JOURNEY
               </span>
               <h2 className="font-serif text-3.5xl md:text-4xl font-bold tracking-tight text-charcoal-900 mb-2 leading-tight">
-                From a Home Filled with Music to a World that Listens
+                <ShinyText text="From a Home Filled with Music to a World that Listens" speed={3} />
               </h2>
               <svg className="w-16 h-3 text-gold-500/50 mb-6" viewBox="0 0 100 12" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M2,6 C15,2 25,10 40,6 C55,2 65,10 80,6 C90,4 95,6 98,6" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" fill="none" />
@@ -40,53 +42,28 @@ export default function TimelineSection({ timelineData, onActionClick, loading }
             </div>
 
             {/* Right Cards Static Grid Column */}
-            <div className="lg:col-span-8 relative mt-6 lg:mt-0">
-              <div className="relative w-full">
+            <div className="lg:col-span-8 mt-6 lg:mt-0">
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center w-full">
                 
-                {/* Horizontal timeline dotted line (visible on desktop lg) */}
-                <div className="hidden lg:block absolute left-8 right-8 h-[1px] border-t border-dashed border-black/20 bottom-[5px] z-0" />
-
-                {/* Desktop View */}
-                <div className="hidden lg:grid lg:grid-cols-4 gap-4 relative z-10 w-full">
+                {/* Timeline Column Skeleton */}
+                <div className="lg:col-span-7 text-left relative pl-8 py-4">
+                  <div className="absolute left-[15px] top-4 bottom-4 w-[1px] bg-charcoal-900/10 dark:bg-white/15" />
                   {[1, 2, 3, 4].map((idx) => (
-                    <div key={idx} className="flex flex-col items-center w-full">
-                      <div className="bg-white border border-cream-300 rounded overflow-hidden shadow-[0_4px_20px_rgba(0,0,0,0.02)] flex-1 flex flex-col w-full">
-                        <div className="w-full aspect-[4/3] bg-cream-200" />
-                        <div className="p-4 flex-1 flex flex-col justify-start text-left space-y-2">
-                          <div className="h-3.5 bg-cream-200 rounded w-1/3" />
-                          <div className="h-4 bg-cream-200 rounded w-5/6" />
-                          <div className="h-2.5 bg-cream-200 rounded w-full" />
-                        </div>
-                      </div>
-                      <div className="hidden lg:block h-6 w-[1px] border-l border-dashed border-black/20 relative z-10 mt-3" />
-                      <div className="hidden lg:flex w-2.5 h-2.5 rounded-full border border-black bg-white items-center justify-center relative z-20">
-                        <div className="w-1 h-1 bg-black rounded-full" />
+                    <div key={idx} className="relative mb-8 last:mb-0">
+                      <div className="absolute left-[-22px] top-1.5 w-3.5 h-3.5 rounded-full bg-cream-200" style={{ transform: 'translateX(-50%)' }} />
+                      <div className="space-y-2">
+                        <div className="h-6 w-16 bg-cream-200 rounded" />
+                        <div className="h-3 w-32 bg-cream-200 rounded" />
+                        <div className="h-2.5 w-48 bg-cream-200 rounded" />
                       </div>
                     </div>
                   ))}
                 </div>
 
-                {/* Mobile View */}
-                <div className="relative lg:hidden text-left pl-10 pr-2 space-y-6">
-                  <div className="absolute left-[18px] top-2 bottom-8 w-[1px] border-l border-dashed border-black/20 z-0" />
-                  {[1, 2, 3, 4].map((idx) => (
-                    <div
-                      key={idx}
-                      className="relative flex flex-col sm:flex-row gap-4 items-start bg-white border border-cream-300 p-4 rounded-xl "
-                    >
-                      <div className="absolute left-[-30px] top-[24px] w-4 h-4 rounded-full border border-black bg-white flex items-center justify-center z-20">
-                        <div className="w-1.5 h-1.5 bg-black rounded-full" />
-                      </div>
-                      <div className="w-full sm:w-28 aspect-[4/3] rounded-lg overflow-hidden bg-cream-200 flex-shrink-0" />
-                      <div className="flex-1 flex flex-col justify-start space-y-2 w-full">
-                        <div className="h-3.5 bg-cream-200 rounded w-16" />
-                        <div className="h-4 bg-cream-200 rounded w-1/2" />
-                        <div className="h-3 bg-cream-200 rounded w-5/6" />
-                      </div>
-                    </div>
-                  ))}
+                {/* Media Column Skeleton */}
+                <div className="lg:col-span-5 flex justify-center items-center py-4">
+                  <div className="w-[240px] h-[310px] bg-cream-200 rounded-xl animate-pulse" />
                 </div>
-
               </div>
             </div>
 
@@ -149,7 +126,7 @@ export default function TimelineSection({ timelineData, onActionClick, loading }
               THE JOURNEY
             </span>
             <h2 className="font-serif text-3.5xl md:text-4xl font-bold tracking-tight text-charcoal-900 mb-2 leading-tight">
-              From a Home Filled with Music to a World that Listens
+              <ShinyText text="From a Home Filled with Music to a World that Listens" speed={3} />
             </h2>
             
             {/* Hand-drawn double squiggle underliner */}
@@ -172,145 +149,156 @@ export default function TimelineSection({ timelineData, onActionClick, loading }
               </button>
             </div>
           </div>
-
           {/* Right Cards Static Grid Column */}
-          <div className="lg:col-span-8 relative mt-6 lg:mt-0">
-            <div className="relative w-full">
+          <div className="lg:col-span-8 mt-6 lg:mt-0">
+            
+            {/* Desktop View (Visible on lg screens and above) */}
+            <div className="hidden lg:grid lg:grid-cols-12 gap-8 items-center w-full relative z-10">
               
-              {/* Horizontal Timeline Dotted Line (visible on desktop lg) */}
-              <div className="hidden lg:block absolute left-8 right-8 h-[1px] border-t border-dashed border-black/20 bottom-[5px] z-0" />
+              {/* Vertical Timeline List (Left) */}
+              <div className="lg:col-span-7 text-left relative pl-8 py-4 w-full">
+                {/* Vertical Line */}
+                <div className="absolute left-[15px] top-4 bottom-4 w-[1px] bg-charcoal-900/10 dark:bg-white/10" />
 
-              {/* Desktop View (Visible on lg screens and above) */}
-              <div className="hidden lg:grid lg:grid-cols-4 gap-4 relative z-10 w-full">
-                {events.map((event, index) => {
-                  const eventImg = event.image || event.coverUrl || fallbacks[index % fallbacks.length];
-                  const slideX = index % 2 === 0 ? -30 : 30;
-                  const rotateVal = index % 2 === 0 ? -2 : 2;
-
-                  return (
-                    <motion.div
-                      key={event._id || index}
-                      initial={{ opacity: 0, x: slideX, y: 30, rotate: rotateVal }}
-                      whileInView={{ opacity: 1, x: 0, y: 0, rotate: 0 }}
-                      viewport={{ once: true, amount: 0.05 }}
-                      
-                      whileTap={{}}
-                      transition={{ 
-                        type: "spring",
-                        stiffness: 80,
-                        damping: 15,
-                        mass: 0.7,
-                        delay: index * 0.06
-                      }}
-                      className="flex flex-col items-center group w-full cursor-pointer"
-                    >
-                      {/* Event Card Container */}
-                      <div className="bg-white border border-cream-300 rounded overflow-hidden flex-1 flex flex-col w-full">
-                        {/* Artwork with Vintage/Sepia filter */}
-                        <div className="w-full aspect-[4/3] bg-neutral-100 overflow-hidden">
-                          <img 
-                            src={eventImg} 
-                            alt={event.title} 
-                            className="w-full h-full object-cover filter  brightness-[0.92] contrast-[1.05]   transition-all duration-700"
-                          />
-                        </div>
-
-                        {/* Content text */}
-                        <div className="p-4 flex-1 flex flex-col justify-start text-left">
-                          <span className="font-sans text-[11px] font-bold text-gold-600 tracking-wider block mb-1">
-                            {event.year}
-                          </span>
-                          <h3 className="font-sans text-charcoal-900 font-bold text-xs md:text-[13px] leading-snug mb-1.5 group-hover:text-gold-600 transition-colors duration-300">
-                            {event.title}
-                          </h3>
-                          <p className="text-[10.5px] text-gray-500 font-light leading-relaxed">
-                            {event.description}
-                          </p>
-                        </div>
-                      </div>
-
-                      {/* Vertical connector line (visible on desktop lg) */}
-                      <div className="hidden lg:block h-6 w-[1px] border-l border-dashed border-black/20 relative z-10 mt-3"></div>
-
-                      {/* Circle node dot (visible on desktop lg) */}
-                      <div className="hidden lg:flex w-2.5 h-2.5 rounded-full border border-black bg-white items-center justify-center relative z-20 group-hover:bg-black transition-colors duration-300">
-                        <div className="w-1 h-1 bg-black rounded-full  transition-colors duration-300" />
-                      </div>
-
-                    </motion.div>
-                  );
-                })}
-              </div>
-
-              {/* Mobile/Tablet Vertical Roadmap View (Visible below lg screens) */}
-              <div ref={containerRef} className="relative lg:hidden text-left pl-10 pr-2">
-                {/* Vertical Dashed Line */}
-                <div className="absolute left-[18px] top-2 bottom-8 w-[1px] border-l border-dashed border-black/20 z-0" />
-                
-                {/* Active progress line that fills on scroll */}
-                <motion.div 
-                  className="absolute left-[18px] top-2 bottom-8 w-[2px] bg-black z-0 origin-top shadow-[0_0_8px_rgba(0,0,0,0.25),0_0_12px_rgba(0,0,0,0.15)]"
-                  style={{ height }}
-                >
-                  {/* Music Note Symbol at the end of the vertical line */}
-                  <motion.div 
-                    className="absolute bottom-[-10px] left-[-6px] text-black drop-shadow-[0_0_4px_rgba(0,0,0,0.3)] text-[10px] font-bold"
-                    style={{ opacity: noteOpacity }}
-                  >
-                    🎵
-                  </motion.div>
-                </motion.div>
-
-                <div className="space-y-6 relative z-10">
+                <div className="space-y-6">
                   {events.map((event, index) => {
-                    const eventImg = event.image || event.coverUrl || fallbacks[index % fallbacks.length];
+                    const isActive = activeEventIdx === index;
                     return (
-                      <motion.div
+                      <div
                         key={event._id || index}
-                        initial={{ opacity: 0.25, y: 25, filter: "grayscale(80%) blur(0.5px)" }}
-                        whileInView={{ opacity: 1, y: 0, filter: "grayscale(0%) blur(0px)" }}
-                        viewport={{ once: false, amount: 0.3 }}
-                        transition={{ duration: 0.45 }}
-                        className="relative flex flex-col sm:flex-row gap-4 items-start bg-white border border-cream-300 p-4 rounded-xl shadow-[0_4px_20px_rgba(0,0,0,0.01)]  transition-all duration-300"
+                        onMouseEnter={() => setActiveEventIdx(index)}
+                        onClick={() => setActiveEventIdx(index)}
+                        className="relative cursor-pointer group text-left"
                       >
-                        {/* Timeline Circle Node Dot */}
-                        <div className="absolute left-[-30px] top-[24px] w-4 h-4 rounded-full border border-black bg-white flex items-center justify-center z-20">
-                          <div className="w-1.5 h-1.5 bg-black rounded-full animate-pulse" />
+                        {/* Node Dot sitting exactly on the line */}
+                        <div
+                          className="absolute left-[-22px] top-1.5 w-3.5 h-3.5 rounded-full bg-white dark:bg-black border border-charcoal-900 dark:border-white/40 flex items-center justify-center transition-all duration-300 group-hover:border-gold-500 group-hover:scale-110"
+                          style={{ transform: 'translateX(-50%)' }}
+                        >
+                          <div className={`w-1.5 h-1.5 rounded-full transition-all duration-300 ${isActive ? 'bg-gold-500 scale-125' : 'bg-charcoal-900 dark:bg-white/40 group-hover:bg-gold-500'}`} />
                         </div>
-                        
-                        {/* Image */}
-                        <div className="w-full sm:w-28 aspect-[4/3] rounded-lg overflow-hidden flex-shrink-0 bg-neutral-100 shadow-[0_2px_8px_rgba(0,0,0,0.04)]">
-                          <img 
-                            src={eventImg} 
-                            alt={event.title} 
-                            className="w-full h-full object-cover filter sepia-[0.25] brightness-[0.95]"
-                          />
-                        </div>
-                        
-                        {/* Content text */}
-                        <div className="flex-1 flex flex-col justify-start">
-                          <span className="font-sans text-[11px] font-bold text-gold-600 tracking-wider block mb-1">
+
+                        {/* Title & Description Details */}
+                        <div className="flex flex-col">
+                          <span className={`font-serif text-2xl md:text-3xl font-extralight tracking-tight transition-colors duration-300 ${isActive ? 'text-gold-500' : 'text-charcoal-400 dark:text-white/30 group-hover:text-charcoal-700 dark:group-hover:text-white/60'}`}>
                             {event.year}
                           </span>
-                          <h3 className="font-sans text-charcoal-900 font-bold text-[14px] leading-snug mb-1">
+                          <h3 className={`font-sans font-bold text-xs uppercase tracking-wider transition-colors duration-300 mt-0.5 ${isActive ? 'text-gold-500' : 'text-charcoal-900 dark:text-white group-hover:text-gold-500'}`}>
                             {event.title}
                           </h3>
-                          <p className="text-xs text-gray-500 font-light leading-relaxed">
+                          <p className={`text-[10.5px] font-light leading-relaxed mt-1 transition-all duration-300 max-w-sm ${isActive ? 'text-charcoal-800 dark:text-gray-300' : 'text-gray-400/80 dark:text-gray-500 group-hover:text-gray-500 dark:group-hover:text-gray-400'}`}>
                             {event.description}
                           </p>
                         </div>
-                      </motion.div>
+                      </div>
                     );
                   })}
                 </div>
               </div>
 
-            </div>
-          </div>
+              {/* Single Slide Frame (Right) */}
+              <div className="lg:col-span-5 flex justify-center items-center py-4 w-full">
+                <div className="relative w-full max-w-[280px] aspect-[4/3] rounded-2xl overflow-hidden bg-white dark:bg-[#111111] border border-cream-300/40 dark:border-white/10 shadow-[0_15px_40px_rgba(0,0,0,0.06)] dark:shadow-[0_25px_60px_rgba(0,0,0,0.55)] transition-all duration-500 hover:scale-[1.02] group">
+                  <AnimatePresence mode="wait">
+                    <motion.img
+                      key={activeEventIdx}
+                      src={events[activeEventIdx]?.image || events[activeEventIdx]?.coverUrl || fallbacks[activeEventIdx % fallbacks.length]}
+                      alt={events[activeEventIdx]?.title}
+                      initial={{ opacity: 0, scale: 0.98 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.98 }}
+                      transition={{ duration: 0.3 }}
+                      className="w-full h-full object-cover filter brightness-[0.93] contrast-[1.03]"
+                    />
+                  </AnimatePresence>
 
+                  {/* Year badge overlay */}
+                  <div className="absolute top-4 left-4 bg-black/60 backdrop-blur-md px-3 py-1 rounded-full text-[9px] uppercase tracking-[0.2em] text-gold-500 font-bold border border-white/5 z-20">
+                    {events[activeEventIdx]?.year}
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+            {/* Mobile/Tablet View (Visible below lg screens) - Inline Accordion */}
+            <div className="lg:hidden relative pl-8 mt-6 w-full z-10">
+              {/* Vertical Line */}
+              <div className="absolute left-[15px] top-1 bottom-1 w-[1px] bg-gradient-to-b from-transparent via-charcoal-900/10 to-transparent dark:via-white/15 z-0" />
+              
+              <div className="space-y-6 relative z-10 w-full">
+                {events.map((event, index) => {
+                  const isActive = activeEventIdx === index;
+                  const eventImg = event.image || event.coverUrl || fallbacks[index % fallbacks.length];
+                  return (
+                    <div key={event._id || index} className="relative mb-5 last:mb-0 text-left w-full">
+                      
+                      {/* Node Dot on the vertical line */}
+                      <button
+                        onClick={() => setActiveEventIdx(isActive ? -1 : index)}
+                        className="absolute left-[-22px] top-1.5 w-3.5 h-3.5 rounded-full bg-white dark:bg-black border border-charcoal-900 dark:border-white/40 flex items-center justify-center transition-all duration-300 z-20 cursor-pointer"
+                        style={{ transform: 'translateX(-50%)' }}
+                      >
+                        <div className={`w-1.5 h-1.5 rounded-full transition-all duration-300 ${isActive ? 'bg-gold-500 scale-125' : 'bg-charcoal-900 dark:bg-white/40'}`} />
+                      </button>
+
+                      {/* Header containing Year and Title */}
+                      <div 
+                        onClick={() => setActiveEventIdx(isActive ? -1 : index)}
+                        className="cursor-pointer select-none font-sans"
+                      >
+                        <div className="flex items-baseline space-x-2.5">
+                          <span className={`font-serif text-2xl font-light transition-colors duration-300 ${isActive ? 'text-gold-500' : 'text-charcoal-400 dark:text-white/30'}`}>
+                            {event.year}
+                          </span>
+                          <span className="text-[10px] tracking-widest text-charcoal-300 dark:text-white/20 uppercase font-bold">
+                            &bull;
+                          </span>
+                          <h3 className={`font-sans font-bold text-xs uppercase tracking-wider transition-colors duration-300 ${isActive ? 'text-gold-500' : 'text-charcoal-900 dark:text-white'}`}>
+                            {event.title}
+                          </h3>
+                        </div>
+                      </div>
+
+                      {/* Accordion Content Block (reveals inline image + text) */}
+                      <div
+                        className={`overflow-hidden transition-all duration-500 ease-in-out ${isActive ? 'max-h-[500px] opacity-100 mt-3.5' : 'max-h-0 opacity-0 pointer-events-none'}`}
+                      >
+                        <div className="flex flex-col sm:flex-row gap-5 bg-cream-100/30 dark:bg-[#111111]/40 border border-cream-300/40 dark:border-white/5 p-4 rounded-xl items-center sm:items-start">
+                          
+                          {/* Sleek borderless image block */}
+                          <div className="w-full sm:w-[160px] aspect-[4/3] rounded-xl overflow-hidden bg-neutral-100 dark:bg-neutral-800 border border-cream-300/40 dark:border-white/10 shadow-md flex-shrink-0 relative">
+                            <img 
+                              src={eventImg} 
+                              alt={event.title} 
+                              className="w-full h-full object-cover filter brightness-[0.93] contrast-[1.03]"
+                            />
+                            {/* Year badge overlay */}
+                            <div className="absolute top-2.5 left-2.5 bg-black/65 backdrop-blur-sm px-2 py-0.5 rounded-full text-[8px] uppercase tracking-wider text-gold-500 font-bold border border-white/5">
+                              {event.year}
+                            </div>
+                          </div>
+
+                          {/* Description */}
+                          <div className="flex-1 flex flex-col justify-center text-center sm:text-left">
+                            <p className="text-[11px] text-gray-500 dark:text-gray-400 font-light leading-relaxed">
+                              {event.description}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+
+          </div>
         </div>
 
       </div>
     </section>
   );
 }
+

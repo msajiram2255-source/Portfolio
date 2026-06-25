@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import ShinyText from './ShinyText';
 import { BookOpen, X, Clock, ArrowRight, Eye } from 'lucide-react';
 
 export default function BlogSection({ blogs, loading, onBlogClick }) {
@@ -13,7 +14,7 @@ export default function BlogSection({ blogs, loading, onBlogClick }) {
               Notes From the Journey
             </span>
             <h2 className="font-serif text-3xl md:text-5xl font-bold tracking-tight text-charcoal-900">
-              Stories. Reflections. Real Moments.
+              <ShinyText text="Stories. Reflections. Real Moments." speed={3} />
             </h2>
             <div className="h-[1.5px] w-16 bg-gold-500 mt-4" />
           </div>
@@ -56,7 +57,7 @@ export default function BlogSection({ blogs, loading, onBlogClick }) {
             Notes From the Journey
           </span>
           <h2 className="font-serif text-3xl md:text-5xl font-bold tracking-tight text-charcoal-900">
-            Stories. Reflections. Real Moments.
+            <ShinyText text="Stories. Reflections. Real Moments." speed={3} />
           </h2>
           <div className="h-[1.5px] w-16 bg-gold-500 mt-4"></div>
         </div>

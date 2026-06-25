@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import ShinyText from './ShinyText';
 import { Play, Pause, ExternalLink } from 'lucide-react';
 
 export default function WorksShowcase({ 
@@ -50,7 +51,7 @@ export default function WorksShowcase({
               My Works
             </span>
             <h2 className="font-serif text-3xl md:text-4xl font-bold tracking-tight text-charcoal-900">
-              Music I've Created
+              <ShinyText text="Music I've Created" speed={3} />
             </h2>
             <div className="h-[1.5px] w-16 bg-gold-500 mt-3"></div>
           </div>

@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Play, Pause, SkipForward, SkipBack, Volume2, VolumeX, Maximize2, Minimize2, Disc, ExternalLink, X, Music } from 'lucide-react';
 import { FaSpotify, FaYoutube } from 'react-icons/fa';
 import { motion, AnimatePresence } from 'framer-motion';
+import ShinyText from './ShinyText';
 
 const getYoutubeId = (url) => {
   if (!url) return '';
@@ -438,7 +439,7 @@ export default function AudioPlayer({ currentSong, songs, onSongSelect, isPlayin
         layout: { type: 'spring', damping: 26, stiffness: 170 },
         y: { type: 'spring', damping: 26, stiffness: 170 }
       }}
-      className={`fixed z-45 bg-[#0a0f1d]/60 backdrop-blur-[32px] saturate-[1.5] border border-white/10 text-white shadow-[0_20px_50px_rgba(0,0,0,0.5)] overflow-hidden font-outfit ${isMinimized
+      className={`fixed z-45 glass-audio-player overflow-hidden font-outfit ${isMinimized
           ? 'bottom-6 right-6 cursor-pointer flex items-center justify-center group'
           : 'bottom-4 md:bottom-6 left-0 right-0 mx-auto'
         }`}
@@ -553,7 +554,7 @@ export default function AudioPlayer({ currentSong, songs, onSongSelect, isPlayin
                           {displaySong.category}
                         </span>
                         <h4 className="text-lg font-bold text-gold-100 leading-tight">
-                          {displaySong.title}
+                          <ShinyText text={displaySong.title} color="#f3eccf" shineColor="#ffffff" speed={3} />
                         </h4>
                         <p className="text-[8.5px] tracking-widest text-gray-400 mt-1 uppercase font-bold">
                           Midhun Saji Ram
@@ -619,7 +620,7 @@ export default function AudioPlayer({ currentSong, songs, onSongSelect, isPlayin
 
                   <div className="overflow-hidden text-left ml-3.5">
                     <h4 className="text-sm font-semibold truncate text-gold-100">
-                      {displaySong.title}
+                      <ShinyText text={displaySong.title} color="#f3eccf" shineColor="#ffffff" speed={3} />
                     </h4>
                     <p className="text-[9px] text-gray-400 uppercase tracking-widest truncate mt-0.5 font-bold">
                       {displaySong.category}

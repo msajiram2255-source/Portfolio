@@ -1,8 +1,9 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import ShinyText from './ShinyText';
 import { ArrowRight } from 'lucide-react';
 
-export default function FatherLegacy({ onStoryClick, content }) {
+export default function FatherLegacy({ onStoryClick, onImageClick, content }) {
   const c = content || {};
   
   const titleLines = (c.title || "Before I found my voice,\nI heard his.").split('\n');
@@ -30,20 +31,22 @@ export default function FatherLegacy({ onStoryClick, content }) {
               </div>
             </div>
 
-            {/* Foreground Polaroid (Young Saji Ram portrait - overlapping top right) */}
+            {/* Foreground Modern Portrait Card (Young Saji Ram portrait - overlapping top right) */}
             <div
-              style={{ transform: 'rotate(3deg)' }}
-              className="absolute top-4 right-10 w-[38%] aspect-[1/1.15] bg-[#fcf9f2] p-2.5 pb-5 shadow-[0_15px_35px_rgba(0,0,0,0.25)] rounded z-20 border border-neutral-300/30"
+              style={{ transform: 'rotate(2deg)' }}
+              className="absolute top-4 right-10 w-[38%] aspect-[3/4] rounded-xl overflow-hidden bg-[#0b111e]/90 border border-white/10 hover:border-gold-500/40 shadow-[0_20px_45px_rgba(0,0,0,0.4)] hover:shadow-[0_0_25px_rgba(204,166,71,0.2)] hover:scale-[1.02] transition-all duration-500 ease-out z-20 group cursor-zoom-in"
+              onClick={() => onImageClick && onImageClick(c.polaroidImage || "data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"600\" height=\"800\" viewBox=\"0 0 600 800\"><rect width=\"100%\" height=\"100%\" fill=\"%23111a2e\"/><text x=\"50%\" y=\"50%\" dominant-baseline=\"middle\" text-anchor=\"middle\" font-family=\"serif\" font-size=\"24\" fill=\"%23cca647\">Saji Ram</text></svg>")}
             >
-              <div className="w-full h-[84%] overflow-hidden bg-neutral-800 rounded">
-                <img
-                  src={c.polaroidImage || "data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"600\" height=\"600\" viewBox=\"0 0 600 600\"><rect width=\"100%\" height=\"100%\" fill=\"%23fafafa\"/><rect x=\"40\" y=\"40\" width=\"520\" height=\"450\" fill=\"%23ebd8be\" opacity=\"0.3\"/><text x=\"50%\" y=\"90%\" dominant-baseline=\"middle\" text-anchor=\"middle\" font-family=\"serif\" font-size=\"18\" fill=\"%234a3e2c\">Saji Ram Portrait</text></svg>"}
-                  alt="Saji Ram portrait"
-                  className="w-full h-full object-cover filter sepia-[0.15] brightness-[0.95] contrast-[1.05]"
-                />
-              </div>
-              <div className="pt-2 text-center">
-                <span className="font-serif text-[8px] text-neutral-800 font-extrabold uppercase tracking-widest block">{c.polaroidCaption || 'Saji Ram'}</span>
+              <img
+                src={c.polaroidImage || "data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"600\" height=\"800\" viewBox=\"0 0 600 800\"><rect width=\"100%\" height=\"100%\" fill=\"%23111a2e\"/><text x=\"50%\" y=\"50%\" dominant-baseline=\"middle\" text-anchor=\"middle\" font-family=\"serif\" font-size=\"24\" fill=\"%23cca647\">Saji Ram</text></svg>"}
+                alt="Saji Ram portrait"
+                className="w-full h-full object-cover filter sepia-[0.1] brightness-[0.93] contrast-[1.05] group-hover:scale-105 transition-transform duration-700 ease-out"
+              />
+              {/* Sleek bottom gold text overlay */}
+              <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-[#0b111e]/90 via-[#0b111e]/50 to-transparent pt-6 pb-3 px-3 text-center">
+                <span className="font-serif text-[9px] text-gold-400 font-extrabold uppercase tracking-widest block opacity-95 group-hover:text-gold-300 transition-colors duration-300">
+                  {c.polaroidCaption || 'Saji Ram'}
+                </span>
               </div>
             </div>
 
@@ -64,7 +67,7 @@ export default function FatherLegacy({ onStoryClick, content }) {
               <h2 className="font-serif text-3.5xl md:text-4xl font-bold tracking-tight mb-2 leading-tight text-white mt-1">
                 {titleLines.map((line, i) => (
                   <React.Fragment key={i}>
-                    {line}
+                    <ShinyText text={line} color="#ffffff" shineColor="#e7d7a2" speed={3} />
                     {i < titleLines.length - 1 && <><br /></>}
                   </React.Fragment>
                 ))}

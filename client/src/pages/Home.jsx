@@ -11,6 +11,7 @@ import BlogSection from '../components/BlogSection';
 import ContactForm from '../components/ContactForm';
 import ScrollReveal from '../components/ScrollReveal';
 import FaqRiderSection from '../components/FaqRiderSection';
+import ShinyText from '../components/ShinyText';
 
 import ShortFilmsSection from '../components/ShortFilmsSection';
 import WebSeriesSection from '../components/WebSeriesSection';
@@ -266,7 +267,11 @@ export default function Home({
 
       {/* 3. Legacy Tribute Collage */}
       <ScrollReveal>
-        <FatherLegacy onStoryClick={handleReadFatherStory} content={siteContent.father_legacy} />
+        <FatherLegacy 
+          onStoryClick={handleReadFatherStory} 
+          onImageClick={setActiveLightboxImage} 
+          content={siteContent.father_legacy} 
+        />
       </ScrollReveal>
 
       <hr className="border-t border-cream-300/60 mx-auto max-w-7xl" />
@@ -290,7 +295,7 @@ export default function Home({
               Portfolio
             </span>
             <h2 className="font-serif text-3xl md:text-4xl font-black text-charcoal-900 leading-none">
-              My Works
+              <ShinyText text="My Works" speed={3} />
             </h2>
             <div className="h-[1.5px] w-16 bg-gold-500 mt-3"></div>
           </div>

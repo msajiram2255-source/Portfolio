@@ -1,5 +1,6 @@
 import React from 'react';
 import { Play, Tv } from 'lucide-react';
+import ShinyText from './ShinyText';
 
 export default function TvProgramsSection({ tvPrograms, onPlayVideo, loading }) {
   const getAssetUrl = (url) => {
@@ -22,7 +23,7 @@ export default function TvProgramsSection({ tvPrograms, onPlayVideo, loading }) 
               My Works
             </span>
             <h2 className="font-serif text-3xl md:text-4xl font-bold tracking-tight text-charcoal-900 animate-pulse">
-              TV Programs
+              <ShinyText text="TV Programs" speed={3} />
             </h2>
             <div className="h-[1.5px] w-16 bg-gold-500 mt-3" />
           </div>
@@ -62,7 +63,7 @@ export default function TvProgramsSection({ tvPrograms, onPlayVideo, loading }) 
               My Works
             </span>
             <h2 className="font-serif text-3xl md:text-4xl font-bold tracking-tight text-charcoal-900">
-              TV Programs
+              <ShinyText text="TV Programs" speed={3} />
             </h2>
             <div className="h-[1.5px] w-16 bg-gold-500 mt-3"></div>
           </div>
@@ -80,7 +81,7 @@ export default function TvProgramsSection({ tvPrograms, onPlayVideo, loading }) 
             My Works
           </span>
           <h2 className="font-serif text-3xl md:text-4xl font-bold tracking-tight text-charcoal-900">
-            TV Programs
+            <ShinyText text="TV Programs" speed={3} />
           </h2>
           <div className="h-[1.5px] w-16 bg-gold-500 mt-3"></div>
         </div>

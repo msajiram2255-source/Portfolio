@@ -1,6 +1,41 @@
 @import url('https://fonts.googleapis.com/css2?family=Alex+Brush&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Inter:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700;800;900&display=swap');
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* Theme CSS Variables */
+:root {
+  --bg-primary: #ffffff;
+  --bg-secondary: #f8fafc; /* cream-100 */
+  --bg-tertiary: #f1f5f9; /* cream-200 */
+  --border-color: rgba(226, 232, 240, 0.4); /* cream-300/40 */
+  --text-primary: #0f172a; /* charcoal-900 */
+  --text-secondary: #475569; /* cream-600 */
+  --text-muted: #64748b; /* charcoal-500 */
+  
+  --shiny-base: #0f172a;
+  --shiny-glow: #b89033;
+}
+
+.dark {
+  --bg-primary: #000000; /* Pure black background */
+  --bg-secondary: #111111; /* Very dark slate panels */
+  --bg-tertiary: #1c1c1e; /* Dark grey cards */
+  --border-color: rgba(255, 255, 255, 0.08);
+  --text-primary: #ffffff; /* Heading & primary text in white */
+  --text-secondary: #e2e8f0; /* Normal text in off-white */
+  --text-muted: #a1a1aa; /* Zinc-400 for muted text */
+  
+  --shiny-base: #ffffff; /* White base for normal headings */
+  --shiny-glow: #b89033; /* Gold shine sweep */
+}
+
+/* Special headings (h1 / page titles) in dark mode get gold base text with white shine */
+.dark h1 .shiny-text {
+  --shiny-base: #b89033;
+  --shiny-glow: #ffffff;
+}
+
 @theme {
   --color-gold-50: #faf8f2;
   --color-gold-100: #f3eccf;
@@ -36,10 +71,10 @@
   --font-script: "Alex Brush", cursive;
 }
 
-/* Custom Base Styles for Light Slate/Blue Theme */
+/* Custom Base Styles for Light/Dark Themes */
 :root {
-  background-color: #ffffff;
-  color: #0f172a;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
   font-family: var(--font-sans);
   scroll-behavior: smooth;
 }
@@ -49,8 +84,8 @@ body {
   padding: 0;
   min-height: 100vh;
   overflow-x: hidden;
-  background-color: #ffffff;
-  color: #0f172a;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
 }
 
 /* Scrollbar styling - clean slate/blue */
@@ -187,4 +222,218 @@ html.lenis, html.lenis body {
 /* Vinyl disc slow rotation for audio components */
 .animate-spin-slow {
   animation: spin 10s linear infinite;
+}
+
+/* Dark Mode Override System */
+.dark {
+  /* Replace white backgrounds with dark navy */
+  .bg-white, 
+  .bg-cream-50, 
+  .bg-cream-50\/20 {
+    background-color: var(--bg-primary) !important;
+  }
+  
+  /* Replace cream backgrounds with navy-800 */
+  .bg-cream-100, 
+  .bg-cream-100\/60,
+  .bg-cream-200 {
+    background-color: var(--bg-secondary) !important;
+  }
+
+  /* Text color overrides */
+  .text-charcoal-900 {
+    color: var(--text-primary) !important;
+  }
+  
+  .text-charcoal-800,
+  .text-gray-600 {
+    color: var(--text-secondary) !important;
+  }
+
+  .text-gray-500,
+  .text-gray-400 {
+    color: var(--text-muted) !important;
+  }
+
+  /* Borders */
+  [class*="border-cream-"],
+  [class*="border-charcoal-"] {
+    border-color: var(--border-color) !important;
+  }
+  
+  /* Glassmorphism navbar overrides */
+  .glass-premium {
+    background: rgba(10, 15, 29, 0.72) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.05) !important;
+  }
+  
+  /* Shimmer cards overlay */
+  .shimmer-card::after {
+    background: linear-gradient(
+      to right,
+      rgba(10, 15, 29, 0) 0%,
+      rgba(184, 144, 51, 0.05) 50%,
+      rgba(10, 15, 29, 0) 100%
+    ) !important;
+  }
+  
+  /* Scrollbar thumb */
+  ::-webkit-scrollbar-thumb {
+    background: #1e293b;
+  }
+
+  /* Override bg-black buttons and active state tabs */
+  button.bg-black,
+  a.bg-black,
+  .bg-black.text-white {
+    background-color: var(--text-primary) !important;
+    color: var(--bg-primary) !important;
+    border: 1px solid var(--border-color) !important;
+  }
+  
+  button.bg-black:hover,
+  a.bg-black:hover,
+  .bg-black.text-white:hover {
+    background-color: var(--color-gold-500) !important;
+    color: #000000 !important;
+  }
+
+  /* Prevent dark-mode overrides on the always-dark hero section play button */
+  #home button.bg-white {
+    background-color: #ffffff !important;
+    color: #000000 !important;
+  }
+  
+  #home button.bg-white:hover {
+    background-color: var(--color-gold-500) !important;
+    color: #000000 !important;
+  }
+
+  /* Fixed scroll progress bar inside App.jsx */
+  .fixed.top-0.left-0.right-0 .bg-black {
+    background-color: var(--color-gold-500) !important;
+  }
+  .fixed.top-0.left-0.right-0 .text-black {
+    color: var(--color-gold-500) !important;
+  }
+
+  /* Timeline Section hardcoded black elements */
+  /* Dashed vertical roadmap border */
+  .border-black\/20 {
+    border-color: rgba(255, 255, 255, 0.15) !important;
+  }
+  
+  /* Roadmap active progress vertical line */
+  .bg-black {
+    &:not(button):not(a):not(.relative.h-full) {
+      background-color: var(--color-gold-500) !important;
+    }
+  }
+  
+  /* Roadmap vertical progress note marker and details icon */
+  .text-black {
+    &:not(a):not(button) {
+      color: var(--color-gold-500) !important;
+    }
+  }
+  
+  /* Timeline markers and circles border */
+  .border-black {
+    border-color: var(--color-gold-500) !important;
+  }
+  
+  /* hover:bg-black overrides for timeline dots */
+  .group:hover .group-hover\:bg-black {
+    background-color: var(--color-gold-500) !important;
+  }
+
+  /* Click particles colors */
+  .music-particle {
+    color: var(--color-gold-500) !important;
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.25) !important;
+  }
+
+  /* Card styling for Timeline, Blog, Works Showcase, and FAQ in Dark Mode */
+  #timeline .bg-white,
+  #blog .bg-white,
+  #blog .group,
+  #works .shimmer-card,
+  #works .bg-white,
+  #faq-rider .bg-white {
+    background-color: var(--bg-secondary) !important; /* Slightly lighter than pure black */
+    border-color: rgba(255, 255, 255, 0.15) !important; /* More visible border */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5) !important;
+    transition: border-color 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  }
+
+  /* Base cards transition overrides for smooth hover animations */
+  #gallery .group,
+  #contact .lg\:col-span-7,
+  [class*="bg-cream-100"] {
+    transition: border-color 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  }
+
+  /* General hover glow effect for all cards in dark mode */
+  #timeline .bg-white:hover,
+  #timeline .group:hover .bg-white,
+  #blog .bg-white:hover,
+  #blog .group:hover,
+  #works .shimmer-card:hover,
+  #works .bg-white:hover,
+  #gallery .group:hover,
+  #faq-rider .bg-white:hover,
+  #contact .lg\:col-span-7:hover,
+  [class*="bg-cream-100"]:hover {
+    border-color: var(--color-gold-500) !important;
+    box-shadow: 0 0 12px rgba(184, 144, 51, 0.35), 0 0 24px rgba(184, 144, 51, 0.15) !important;
+  }
+
+  /* Inner image border separators inside blog/timeline cards */
+  #blog .border-cream-300\/40,
+  #timeline .border-cream-300\/40 {
+    border-color: rgba(255, 255, 255, 0.12) !important;
+  }
+}
+
+/* Proper Clear Glass effect for Audio Player */
+.glass-audio-player {
+  background: rgba(10, 15, 29, 0.3) !important;
+  backdrop-filter: blur(28px) saturate(190%) !important;
+  -webkit-backdrop-filter: blur(28px) saturate(190%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.05) !important;
+  color: #ffffff !important;
+  transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1), height 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-radius 0.4s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease !important;
+}
+
+.dark .glass-audio-player {
+  background: rgba(0, 0, 0, 0.25) !important;
+  border-color: rgba(255, 255, 255, 0.08) !important;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.65), inset 0 1px 0 rgba(255, 255, 255, 0.03) !important;
+}
+
+
+/* View Transition Theme Reveal Animation styling */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+  height: 100%;
+}
+
+::view-transition-old(root) {
+  z-index: 9999;
+}
+
+::view-transition-new(root) {
+  z-index: 1;
+}
+
+.dark::view-transition-old(root) {
+  z-index: 1;
+}
+
+.dark::view-transition-new(root) {
+  z-index: 9999;
 }

@@ -1,5 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import ShinyText from './ShinyText';
 import { Play, Video } from 'lucide-react';
 
 export default function WebSeriesSection({ webSeries, onPlayVideo, loading }) {
@@ -23,7 +24,7 @@ export default function WebSeriesSection({ webSeries, onPlayVideo, loading }) {
               My Works
             </span>
             <h2 className="font-serif text-3xl md:text-4xl font-bold tracking-tight text-charcoal-900 animate-pulse">
-              Web Series
+              <ShinyText text="Web Series" speed={3} />
             </h2>
             <div className="h-[1.5px] w-16 bg-gold-500 mt-3" />
           </div>
@@ -62,7 +63,7 @@ export default function WebSeriesSection({ webSeries, onPlayVideo, loading }) {
               My Works
             </span>
             <h2 className="font-serif text-3xl md:text-4xl font-bold tracking-tight text-charcoal-900">
-              Web Series
+              <ShinyText text="Web Series" speed={3} />
             </h2>
             <div className="h-[1.5px] w-16 bg-gold-500 mt-3"></div>
           </div>
@@ -80,7 +81,7 @@ export default function WebSeriesSection({ webSeries, onPlayVideo, loading }) {
             My Works
           </span>
           <h2 className="font-serif text-3xl md:text-4xl font-bold tracking-tight text-charcoal-900">
-            Web Series
+            <ShinyText text="Web Series" speed={3} />
           </h2>
           <div className="h-[1.5px] w-16 bg-gold-500 mt-3"></div>
         </div>

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { ArrowLeft, Play, Pause, Music, Mic, PenTool, Sliders, Home as HomeIcon, Share2 } from 'lucide-react';
 import { FaSpotify, FaYoutube } from 'react-icons/fa';
 import { motion } from 'framer-motion';
+import ShinyText from '../components/ShinyText';
 
 export default function WorkDetailPage({ song, onBackClick, onPlayClick, currentSong, isPlaying, loading, isAudioLoading }) {
   const [copied, setCopied] = useState(false);
@@ -186,7 +187,7 @@ export default function WorkDetailPage({ song, onBackClick, onPlayClick, current
               </span>
             </div>
             <h1 className="font-serif text-3xl md:text-4.5xl font-bold tracking-tight text-charcoal-900 leading-tight mb-2">
-              {song.title}
+              <ShinyText text={song.title} speed={3} />
             </h1>
             <div className="h-[1.5px] w-16 bg-gold-500 mt-1 mb-4"></div>
             

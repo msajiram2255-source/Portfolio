@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Play, Film } from 'lucide-react';
+import ShinyText from './ShinyText';
 
 export default function ShortFilmsSection({ shortFilms, onPlayVideo, loading }) {
   const [selectedShortFilm, setSelectedShortFilm] = useState(null);
@@ -32,7 +33,7 @@ export default function ShortFilmsSection({ shortFilms, onPlayVideo, loading }) 
               My Works
             </span>
             <h2 className="font-serif text-3xl md:text-4xl font-bold tracking-tight text-charcoal-900 animate-pulse">
-              Short Films
+              <ShinyText text="Short Films" speed={3} />
             </h2>
             <div className="h-[1.5px] w-16 bg-gold-500 mt-3" />
           </div>
@@ -79,7 +80,7 @@ export default function ShortFilmsSection({ shortFilms, onPlayVideo, loading }) 
               My Works
             </span>
             <h2 className="font-serif text-3xl md:text-4xl font-bold tracking-tight text-charcoal-900">
-              Short Films
+              <ShinyText text="Short Films" speed={3} />
             </h2>
             <div className="h-[1.5px] w-16 bg-gold-500 mt-3"></div>
           </div>
@@ -97,7 +98,7 @@ export default function ShortFilmsSection({ shortFilms, onPlayVideo, loading }) 
             My Works
           </span>
           <h2 className="font-serif text-3xl md:text-4xl font-bold tracking-tight text-charcoal-900">
-            Short Films
+            <ShinyText text="Short Films" speed={3} />
           </h2>
           <div className="h-[1.5px] w-16 bg-gold-500 mt-3"></div>
         </div>
@@ -128,7 +129,7 @@ export default function ShortFilmsSection({ shortFilms, onPlayVideo, loading }) 
                     Release Year: {selectedShortFilm.releaseYear}
                   </span>
                   <h4 className="font-serif text-xl md:text-2xl font-black mt-2 leading-none text-white tracking-tight">
-                    {selectedShortFilm.title}
+                    <ShinyText text={selectedShortFilm.title} color="#ffffff" shineColor="#e7d7a2" speed={3} />
                   </h4>
                 </div>
               </div>

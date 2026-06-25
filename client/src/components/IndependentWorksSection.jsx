@@ -1,5 +1,6 @@
 import React from 'react';
 import { Play, Pause, Radio } from 'lucide-react';
+import ShinyText from './ShinyText';
 
 export default function IndependentWorksSection({ 
   independentWorks, 
@@ -30,7 +31,7 @@ export default function IndependentWorksSection({
               My Works
             </span>
             <h2 className="font-serif text-3xl md:text-4xl font-bold tracking-tight text-charcoal-900 animate-pulse">
-              Independent Works
+              <ShinyText text="Independent Works" speed={3} />
             </h2>
             <div className="h-[1.5px] w-16 bg-gold-500 mt-3" />
           </div>
@@ -134,7 +135,7 @@ export default function IndependentWorksSection({
               My Works
             </span>
             <h2 className="font-serif text-3xl md:text-4xl font-bold tracking-tight text-charcoal-900">
-              Independent Works
+              <ShinyText text="Independent Works" speed={3} />
             </h2>
             <div className="h-[1.5px] w-16 bg-gold-500 mt-3"></div>
           </div>
@@ -152,7 +153,7 @@ export default function IndependentWorksSection({
             My Works
           </span>
           <h2 className="font-serif text-3xl md:text-4xl font-bold tracking-tight text-charcoal-900">
-            Independent Works
+            <ShinyText text="Independent Works" speed={3} />
           </h2>
           <div className="h-[1.5px] w-16 bg-gold-500 mt-3"></div>
         </div>

@@ -2816,14 +2816,14 @@ export default function App() {
                         <FileUpload accept="image/*" onChange={e => handleSiteContentImageUpload(e, 'father_legacy', 'mainImage')} label="Upload Main Photo" value={legacyForm.mainImage} />
                         <Input type="text" value={legacyForm.mainImage} onChange={e => setLegacyForm({ ...legacyForm, mainImage: e.target.value })} placeholder="Or Enter Image URL" className="mt-1.5 bg-obsidian-950/70 border border-obsidian-850 px-3 py-2 text-[10px] text-obsidian-100 rounded-lg focus:outline-none" />
                       </FormField>
-                      <FormField label="Polaroid Visual Image">
-                        <FileUpload accept="image/*" onChange={e => handleSiteContentImageUpload(e, 'father_legacy', 'polaroidImage')} label="Upload Polaroid Photo" value={legacyForm.polaroidImage} />
+                      <FormField label="Overlapping Portrait Photo">
+                        <FileUpload accept="image/*" onChange={e => handleSiteContentImageUpload(e, 'father_legacy', 'polaroidImage')} label="Upload Portrait Photo" value={legacyForm.polaroidImage} />
                         <Input type="text" value={legacyForm.polaroidImage} onChange={e => setLegacyForm({ ...legacyForm, polaroidImage: e.target.value })} placeholder="Or Enter Image URL" className="mt-1.5 bg-obsidian-950/70 border border-obsidian-850 px-3 py-2 text-[10px] text-obsidian-100 rounded-lg focus:outline-none" />
                       </FormField>
                     </div>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                      <FormField label="Polaroid Caption text">
+                      <FormField label="Portrait Caption text">
                         <Input type="text" value={legacyForm.polaroidCaption} onChange={e => setLegacyForm({ ...legacyForm, polaroidCaption: e.target.value })} placeholder="e.g. Saji Ram" />
                       </FormField>
                       <FormField label="Cursive Script signature line">

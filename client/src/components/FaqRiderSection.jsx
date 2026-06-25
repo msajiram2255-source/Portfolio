@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import ShinyText from './ShinyText';
 import { ChevronDown, FileText, Download } from 'lucide-react';
 
 export default function FaqRiderSection({ content }) {
@@ -45,7 +46,7 @@ export default function FaqRiderSection({ content }) {
             {c.subtitle || 'Got Questions?'}
           </span>
           <h2 className="font-serif text-charcoal-900 text-3xl md:text-5xl font-bold tracking-tight text-center">
-            {c.title || 'Frequently Asked Questions'}
+            <ShinyText text={c.title || 'Frequently Asked Questions'} speed={3} />
           </h2>
           <div className="h-[1.5px] w-16 bg-gold-500 mt-4 mx-auto"></div>
         </div>
