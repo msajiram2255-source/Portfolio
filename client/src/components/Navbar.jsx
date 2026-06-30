@@ -3,7 +3,7 @@ import { Menu, X, Sun, Moon } from 'lucide-react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { FaInstagram, FaYoutube, FaSpotify } from 'react-icons/fa';
 
-export default function Navbar({ activeSection, setActiveSection, currentPath, navigate, onSelectCategory, theme, toggleTheme }) {
+export default function Navbar({ activeSection, setActiveSection, currentPath, navigate, onSelectCategory, theme, toggleTheme, profile, siteContent }) {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
@@ -35,7 +35,7 @@ export default function Navbar({ activeSection, setActiveSection, currentPath, n
   const showSolidNavbar = scrolled || currentPath !== '/';
 
   return (
-    <nav className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 ${showSolidNavbar ? 'py-3 glass-premium shadow-sm shadow-gray-200/30' : 'py-4 bg-transparent'}`}>
+    <nav className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 ${showSolidNavbar ? 'py-3 glass-premium shadow-sm shadow-gray-200/30' : 'py-4 bg-transparent'}`} aria-label="Main navigation">
       <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
         
         {/* Logo Branding */}
@@ -51,10 +51,10 @@ export default function Navbar({ activeSection, setActiveSection, currentPath, n
           }}
         >
           <span className="font-script text-3.5xl md:text-4xl text-gold-400 group-hover:text-gold-600 transition-colors duration-300 leading-[0.8] tracking-normal select-none">
-            Midhun Saji Ram
+            {profile?.name || 'Midhun Saji Ram'}
           </span>
           <span className="text-[7.5px] md:text-[8.5px] tracking-[0.38em] text-white uppercase font-bold mt-1.5 leading-none">
-            Music Director | Singer
+            {profile?.designation || 'Music Director | Singer'}
           </span>
         </div>
 
@@ -174,9 +174,9 @@ export default function Navbar({ activeSection, setActiveSection, currentPath, n
 
               {/* Social Channels */}
               <div className="mt-auto pt-6 border-t border-cream-300/40 flex justify-center space-x-6 text-charcoal-900">
-                <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="hover:text-gold-600 transition-colors duration-300"><FaInstagram size={20} /></a>
-                <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" className="hover:text-gold-600 transition-colors duration-300"><FaYoutube size={20} /></a>
-                <a href="https://spotify.com" target="_blank" rel="noopener noreferrer" className="hover:text-gold-600 transition-colors duration-300"><FaSpotify size={20} /></a>
+                <a href={siteContent?.footer?.instagramUrl || "https://instagram.com"} target="_blank" rel="noopener noreferrer" className="hover:text-gold-600 transition-colors duration-300"><FaInstagram size={20} /></a>
+                <a href={siteContent?.footer?.youtubeUrl || "https://youtube.com"} target="_blank" rel="noopener noreferrer" className="hover:text-gold-600 transition-colors duration-300"><FaYoutube size={20} /></a>
+                <a href={siteContent?.footer?.spotifyUrl || "https://spotify.com"} target="_blank" rel="noopener noreferrer" className="hover:text-gold-600 transition-colors duration-300"><FaSpotify size={20} /></a>
               </div>
             </motion.div>
           </>

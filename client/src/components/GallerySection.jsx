@@ -181,6 +181,7 @@ export default function GallerySection({ galleryItems = [], onViewAllClick, infi
                   <img 
                     src={item.url} 
                     alt={item.title} 
+                    loading="lazy"
                     className="w-full h-full object-cover filter brightness-[0.96] group-hover:brightness-100 group-hover:scale-105 transition-transform duration-700 pointer-events-none"
                   />
 

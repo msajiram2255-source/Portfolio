@@ -1,4 +1,5 @@
 import { AnimatePresence, motion } from 'framer-motion';
+import { useMemo } from 'react';
 import { ChevronLeft, ChevronRight, X } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import AboutSection from '../components/AboutSection';
@@ -12,6 +13,7 @@ import ScrollReveal from '../components/ScrollReveal';
 import ShinyText from '../components/ShinyText';
 import TimelineSection from '../components/TimelineSection';
 import WorksShowcase from '../components/WorksShowcase';
+import SEO, { generatePersonSchema, generateWebSiteSchema, generateFAQSchema } from '../components/SEO';
 
 import IndependentWorksSection from '../components/IndependentWorksSection';
 import MoviesSection from '../components/MoviesSection';
@@ -181,8 +183,36 @@ export default function Home({
   const displayedMovies = movies.slice(0, 5);
   const displayedIndependentWorks = independentWorks.slice(0, 3);
 
+  // Build FAQ items for schema from siteContent or defaults
+  const faqItems = useMemo(() => {
+    const faqContent = siteContent?.faqs;
+    const items = faqContent?.items && faqContent.items.length > 0
+      ? faqContent.items
+      : [
+          { question: 'How can I commission Midhun for a film score or composition?', answer: 'You can reach out directly via the Booking Contact Form with details about your script, timeline, and production scale.' },
+          { question: 'What is the typical timeline for background scoring?', answer: 'Typically, a feature-length film background score takes 4 to 6 weeks, including thematic brainstorming, recording, synth layering, and final pre-mixes.' },
+          { question: 'Does Midhun perform live, and what is the standard lineup?', answer: 'Yes, Midhun performs both solo cinematic vocal sets and full live-band fusion sets with a 5-piece band.' },
+          { question: 'Can directors/producers attend remote recording sessions?', answer: 'Absolutely. We host high-fidelity remote recording reviews using Audiomovers Listento for real-time studio monitoring.' },
+        ];
+    return items;
+  }, [siteContent]);
+
+  const homeSchemas = useMemo(() => {
+    const schemas = [generatePersonSchema(), generateWebSiteSchema()];
+    const faqSchema = generateFAQSchema(faqItems);
+    if (faqSchema) schemas.push(faqSchema);
+    return schemas;
+  }, [faqItems]);
+
   return (
     <div className="animate-fade-in text-charcoal-900 bg-white">
+      <SEO
+        title="Home"
+        description="Discover the cinematic, emotional, and luxurious musical world of Midhun Saji Ram. Explore compositions, journey timeline, blog reflections, and visual gallery."
+        keywords="Midhun Saji Ram, Music Director, Malayalam Composer, Singer, Performer, Film Scoring, Cinematic Music, Kerala"
+        canonical="/"
+        schemas={homeSchemas}
+      />
       
       {/* Lightbox Modal for Large Movie Poster */}
       <AnimatePresence>

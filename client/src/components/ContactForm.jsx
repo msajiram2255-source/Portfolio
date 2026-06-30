@@ -4,7 +4,7 @@ import { Mail, Phone, MapPin, Send } from 'lucide-react';
 import { FaInstagram, FaYoutube, FaSpotify } from 'react-icons/fa';
 import confetti from 'canvas-confetti';
 
-export default function ContactForm() {
+export default function ContactForm({ profile, siteContent }) {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -25,19 +25,42 @@ export default function ContactForm() {
     setLoading(true);
     setStatus({ type: '', text: '' });
 
+    // Use environment key or fallback placeholder
+    const accessKey = import.meta.env.VITE_WEB3FORMS_ACCESS_KEY || 'YOUR_WEB3FORMS_ACCESS_KEY';
+
+    if (!accessKey || accessKey === 'YOUR_WEB3FORMS_ACCESS_KEY') {
+      setStatus({
+        type: 'error',
+        text: 'Error Sending message. Please try again later.'
+      });
+      setLoading(false);
+      return;
+    }
+
     try {
-      const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
-      const response = await fetch(`${API_URL}/messages`, {
+      const payload = {
+        access_key: accessKey,
+        name: formData.name,
+        email: formData.email,
+        phone: formData.phone || 'Not Provided',
+        subject: formData.subject ? `Portfolio Inquiry: ${formData.subject}` : 'New Inquiry from Portfolio Website',
+        message: formData.message,
+        from_name: 'Midhun Saji Ram Portfolio',
+        subject_prefix: 'Portfolio Contact'
+      };
+
+      const response = await fetch('https://api.web3forms.com/submit', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
         },
-        body: JSON.stringify(formData)
+        body: JSON.stringify(payload)
       });
 
       const data = await response.json();
 
-      if (response.ok) {
+      if (response.ok && data.success) {
         setStatus({ type: 'success', text: 'Thank you! Your message has been sent successfully.' });
         setFormData({ name: '', email: '', phone: '', subject: '', message: '' });
         
@@ -90,8 +113,8 @@ export default function ContactForm() {
                 </div>
                 <div className="min-w-0">
                   <span className="text-[8px] uppercase tracking-[0.2em] text-gray-400 font-bold block">Direct Email</span>
-                  <a href="mailto:midhunasajiram.music@gmail.com" className="text-[11px] font-black text-charcoal-900 hover:text-gold-600 transition-colors mt-0.5 block break-all font-mono">
-                    midhunasajiram.music@gmail.com
+                  <a href={`mailto:${profile?.email || 'bookings@midhunsajiram.in'}`} className="text-[11px] font-black text-charcoal-900 hover:text-gold-600 transition-colors mt-0.5 block break-all font-mono">
+                    {profile?.email || 'bookings@midhunsajiram.in'}
                   </a>
                 </div>
               </div>
@@ -102,8 +125,8 @@ export default function ContactForm() {
                 </div>
                 <div className="min-w-0">
                   <span className="text-[8px] uppercase tracking-[0.2em] text-gray-400 font-bold block">Call / WhatsApp</span>
-                  <a href="tel:+919074581234" className="text-[11px] font-black text-charcoal-900 hover:text-gold-600 transition-colors mt-0.5 block font-mono">
-                    +91 90745 81234
+                  <a href={`tel:${profile?.phone?.replace(/\s+/g, '') || '+919074581234'}`} className="text-[11px] font-black text-charcoal-900 hover:text-gold-600 transition-colors mt-0.5 block font-mono">
+                    {profile?.phone || '+91 90745 81234'}
                   </a>
                 </div>
               </div>
@@ -115,7 +138,7 @@ export default function ContactForm() {
                 <div className="min-w-0">
                   <span className="text-[8px] uppercase tracking-[0.2em] text-gray-400 font-bold block">Primary Location</span>
                   <span className="text-[11px] font-black text-charcoal-900 mt-0.5 block font-mono">
-                    Kochi, Kerala, India
+                    {profile?.location || 'Kochi, Kerala, India'}
                   </span>
                 </div>
               </div>
@@ -124,9 +147,9 @@ export default function ContactForm() {
             {/* Social channels stack */}
             <div className="flex space-x-3.5 text-gray-400 pt-4 border-t border-cream-200/50">
               {[
-                { icon: <FaSpotify size={15} />, url: 'https://spotify.com' },
-                { icon: <FaYoutube size={15} />, url: 'https://youtube.com' },
-                { icon: <FaInstagram size={15} />, url: 'https://instagram.com' }
+                { icon: <FaSpotify size={15} />, url: siteContent?.footer?.spotifyUrl || 'https://spotify.com' },
+                { icon: <FaYoutube size={15} />, url: siteContent?.footer?.youtubeUrl || 'https://youtube.com' },
+                { icon: <FaInstagram size={15} />, url: siteContent?.footer?.instagramUrl || 'https://instagram.com' }
               ].map((item, index) => (
                 <a 
                   key={index} 

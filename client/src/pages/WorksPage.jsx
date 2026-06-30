@@ -1,6 +1,6 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import { ChevronLeft, ChevronRight, X } from 'lucide-react';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import IndependentWorksSection from '../components/IndependentWorksSection';
 import MoviesSection from '../components/MoviesSection';
 import ShinyText from '../components/ShinyText';
@@ -8,6 +8,7 @@ import ShortFilmsSection from '../components/ShortFilmsSection';
 import TvProgramsSection from '../components/TvProgramsSection';
 import WebSeriesSection from '../components/WebSeriesSection';
 import WorksShowcase from '../components/WorksShowcase';
+import SEO, { generateCollectionPageSchema, generateBreadcrumbSchema } from '../components/SEO';
 
 export default function WorksPage({ 
   songs, 
@@ -185,6 +186,19 @@ export default function WorksPage({
 
   return (
     <div className="pt-20 animate-fade-in bg-white min-h-screen text-charcoal-900">
+      <SEO
+        title="Works & Compositions"
+        description="Explore the complete portfolio of songs, short films, web series, TV programs, feature films, and independent works by Midhun Saji Ram."
+        keywords="Midhun Saji Ram Songs, Malayalam Film Music, Short Films, Web Series, TV Programs, Feature Films, Independent Works, Compositions"
+        canonical="/works"
+        schemas={[
+          generateCollectionPageSchema(songs.length + mediaWorks.length),
+          generateBreadcrumbSchema([
+            { name: 'Home', url: '/' },
+            { name: 'Works & Compositions', url: '/works' },
+          ]),
+        ]}
+      />
       
       {/* Lightbox Modal for Large Movie Poster */}
       <AnimatePresence>

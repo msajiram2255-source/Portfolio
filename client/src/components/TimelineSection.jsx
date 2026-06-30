@@ -271,6 +271,7 @@ export default function TimelineSection({ timelineData, onActionClick, loading }
                             <img 
                               src={eventImg} 
                               alt={event.title} 
+                              loading="lazy"
                               className="w-full h-full object-cover filter brightness-[0.93] contrast-[1.03]"
                             />
                             {/* Year badge overlay */}

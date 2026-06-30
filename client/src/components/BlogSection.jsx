@@ -92,6 +92,7 @@ export default function BlogSection({ blogs, loading, onBlogClick }) {
                 <img 
                   src={blog.coverUrl} 
                   alt={blog.title} 
+                  loading="lazy"
                   className="w-full h-full object-cover filter brightness-95 group-hover:brightness-100 group-hover:scale-105 transition-all duration-700"
                 />
 

@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { ArrowLeft, Play, Pause, Music, Mic, PenTool, Sliders, Home as HomeIcon, Share2 } from 'lucide-react';
 import { FaSpotify, FaYoutube } from 'react-icons/fa';
 import { motion } from 'framer-motion';
 import ShinyText from '../components/ShinyText';
+import SEO, { generateMusicRecordingSchema, generateBreadcrumbSchema } from '../components/SEO';
 
 export default function WorkDetailPage({ song, onBackClick, onPlayClick, currentSong, isPlaying, loading, isAudioLoading }) {
   const [copied, setCopied] = useState(false);
@@ -114,6 +115,22 @@ export default function WorkDetailPage({ song, onBackClick, onPlayClick, current
 
   return (
     <div className="min-h-screen bg-white text-charcoal-900 animate-fade-in flex flex-col pt-24 pb-16">
+      <SEO
+        title={song.title}
+        description={song.description || `Listen to ${song.title} by Midhun Saji Ram. A cinematic composition blending classical roots with contemporary storytelling.`}
+        keywords={`${song.title}, Midhun Saji Ram, ${song.category || 'Single'}, Malayalam Music, Composition`}
+        canonical={`/work-detail?id=${song._id}`}
+        ogImage={song.coverUrl || undefined}
+        ogType="music.song"
+        schemas={[
+          generateMusicRecordingSchema(song),
+          generateBreadcrumbSchema([
+            { name: 'Home', url: '/' },
+            { name: 'Works', url: '/works' },
+            { name: song.title, url: `/work-detail?id=${song._id}` },
+          ]),
+        ]}
+      />
       
       <div className="max-w-7xl mx-auto px-6 w-full flex-1 flex flex-col justify-center">
         

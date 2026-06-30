@@ -1,15 +1,29 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X } from 'lucide-react';
 import AboutSection from '../components/AboutSection';
 import FatherLegacy from '../components/FatherLegacy';
 import TimelineSection from '../components/TimelineSection';
+import SEO, { generatePersonSchema, generateBreadcrumbSchema } from '../components/SEO';
 
 export default function AboutPage({ timelineData, onStoryClick, onExploreClick, loading, siteContent = {} }) {
   const [activeLightboxImage, setActiveLightboxImage] = useState(null);
 
   return (
     <div className="pt-20 animate-fade-in relative">
+      <SEO
+        title="About & Journey"
+        description="Learn about Midhun Saji Ram's musical journey, his father Saji Ram's legacy, career timeline, and the passion behind cinematic compositions."
+        keywords="Midhun Saji Ram About, Saji Ram Legacy, Music Journey, Malayalam Music Director Biography, Career Timeline"
+        canonical="/about"
+        schemas={[
+          generatePersonSchema(),
+          generateBreadcrumbSchema([
+            { name: 'Home', url: '/' },
+            { name: 'About & Journey', url: '/about' },
+          ]),
+        ]}
+      />
       
       {/* Lightbox Modal for Spotlight Image */}
       <AnimatePresence>

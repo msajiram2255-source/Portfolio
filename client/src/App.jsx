@@ -207,6 +207,9 @@ export default function App() {
         polaroidImage: getAssetUrl(res.father_legacy.polaroidImage)
       };
     }
+    if (res.profile) {
+      res.profile = { ...res.profile, avatarUrl: getAssetUrl(res.profile.avatarUrl) };
+    }
     return res;
   };
 
@@ -301,9 +304,12 @@ export default function App() {
         onSelectCategory={setWorksCategory}
         theme={theme}
         toggleTheme={toggleTheme}
+        profile={siteContent?.profile}
+        siteContent={siteContent}
       />
 
       {/* Main Portfolio Content */}
+      <main id="main-content">
       {(() => {
         switch (currentPath.split('?')[0]) {
           case '/about':
@@ -369,13 +375,14 @@ export default function App() {
                 blog={detailedBlog} 
                 onBackClick={() => navigate('/blog')}
                 loading={loading}
+                siteContent={siteContent}
               />
             );
           }
           case '/gallery':
             return <GalleryPage gallery={gallery} loading={loading} />;
           case '/contact':
-            return <ContactPage />;
+            return <ContactPage siteContent={siteContent} />;
           case '/':
           default:
             return (
@@ -402,19 +409,20 @@ export default function App() {
             );
         }
       })()}
+      </main>
 
       {/* Luxury Brand Editorial Footer */}
-      <footer className="bg-neutral-950 text-neutral-400 py-16 border-t border-white/5 relative z-10 font-outfit">
+      <footer className="bg-neutral-950 text-neutral-400 py-16 border-t border-white/5 relative z-10 font-outfit" role="contentinfo" aria-label="Site footer">
         <div className="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-12 gap-10 items-start">
           
           {/* Brand Stack (Span 5) */}
           <div className="md:col-span-5 text-left space-y-5">
             <div>
               <span className="font-outfit text-white font-black tracking-[0.05em] text-base uppercase block leading-none">
-                {siteContent.footer?.brandName || 'Midhun Saji Ram'}
+                {siteContent.profile?.name || siteContent.footer?.brandName || 'Midhun Saji Ram'}
               </span>
               <span className="text-[8px] tracking-[0.25em] text-gold-500 font-bold mt-1.5 uppercase block font-mono">
-                {siteContent.footer?.brandTagline || 'Music Director & Composer'}
+                {siteContent.profile?.designation || siteContent.footer?.brandTagline || 'Music Director & Composer'}
               </span>
             </div>
             
@@ -423,7 +431,7 @@ export default function App() {
             </p>
 
             {/* Social channels stack */}
-            <div className="flex space-x-3 text-neutral-500 pt-2">
+            <div className="flex space-x-3 text-neutral-500 pt-2" aria-label="Social media links" role="group">
               {[
                 { icon: <FaSpotify size={14} />, url: siteContent.footer?.spotifyUrl || 'https://spotify.com' },
                 { icon: <FaYoutube size={14} />, url: siteContent.footer?.youtubeUrl || 'https://youtube.com' },
@@ -446,7 +454,7 @@ export default function App() {
           <div className="hidden md:block md:col-span-1"></div>
 
           {/* Navigation Column (Span 3) */}
-          <div className="md:col-span-3 text-left">
+          <nav className="md:col-span-3 text-left" aria-label="Footer navigation">
             <h4 className="text-[8.5px] uppercase tracking-[0.2em] text-white font-bold mb-4 font-mono">Navigation</h4>
             <ul className="space-y-2.5 text-[10px] tracking-wider uppercase font-bold text-neutral-400">
               <li>
@@ -465,7 +473,7 @@ export default function App() {
                 <button onClick={() => navigate('/gallery')} className="hover:text-white transition-colors cursor-pointer text-left">Visual Gallery</button>
               </li>
             </ul>
-          </div>
+          </nav>
 
           {/* Contact Details Column (Span 3) */}
           <div className="md:col-span-3 text-left">
@@ -473,11 +481,11 @@ export default function App() {
             <p className="text-neutral-500 font-light leading-relaxed mb-2 text-[11px]">
               For scores, bookings, and collaborations:
             </p>
-            <a href={`mailto:${siteContent.footer?.bookingEmail || 'bookings@midhunsajiram.com'}`} className="text-white hover:text-gold-500 transition-colors text-[11px] font-bold block font-mono">
-              {siteContent.footer?.bookingEmail || 'bookings@midhunsajiram.com'}
+            <a href={`mailto:${siteContent.profile?.email || siteContent.footer?.bookingEmail || 'bookings@midhunsajiram.in'}`} className="text-white hover:text-gold-500 transition-colors text-[11px] font-bold block font-mono">
+              {siteContent.profile?.email || siteContent.footer?.bookingEmail || 'bookings@midhunsajiram.in'}
             </a>
             <span className="text-neutral-500 text-[10px] mt-2 block font-mono">
-              {siteContent.footer?.location || 'Kochi, Kerala, India'}
+              {siteContent.profile?.location || siteContent.footer?.location || 'Kochi, Kerala, India'}
             </span>
           </div>
 

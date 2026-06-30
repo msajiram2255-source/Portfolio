@@ -141,6 +141,7 @@ export default function WorksShowcase({
                       <img 
                         src={song.coverUrl} 
                         alt={song.title} 
+                        loading="lazy"
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 filter brightness-95 group-hover:brightness-100"
                       />
                     </div>

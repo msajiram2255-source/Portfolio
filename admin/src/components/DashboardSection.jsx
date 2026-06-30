@@ -12,7 +12,8 @@ export default function DashboardSection({
   setStreamPeriod,
   streamData,
   handleMetricClick,
-  handleTabSelect
+  handleTabSelect,
+  profile
 }) {
   const combinedRecent = [];
 
@@ -68,7 +69,7 @@ export default function DashboardSection({
       {/* Heading */}
       <div>
         <h2 className="font-serif text-xl font-bold tracking-tight text-obsidian-100 flex items-center space-x-2">
-          <span>Welcome back, Midhun!</span>
+          <span>Welcome back, {profile?.name?.split(' ')[0] || 'Midhun'}!</span>
         </h2>
         <p className="text-[11px] text-slate-400 mt-0.5">Here is a quick overview of your database metrics and stream stats.</p>
       </div>
@@ -79,7 +80,7 @@ export default function DashboardSection({
           { label: 'Songs', value: stats.songs, change: 'Manage compositions database', target: 'songs', bg: 'from-blue-600/10 to-transparent' },
           { label: 'My Works', value: stats.mediaWorks, change: 'Manage cinematic works', target: 'media-works', bg: 'from-cyan-600/10 to-transparent' },
           { label: 'Journey Milestones', value: stats.timelineEvents, change: 'View achievement roadmap', target: 'timeline', bg: 'from-purple-600/10 to-transparent' },
-          { label: 'Booking Inbox', value: stats.totalMessages, change: `${stats.unreadMessages} unread enquiry message(s)`, target: 'enquiries', alert: stats.unreadMessages > 0, bg: 'from-amber-600/10 to-transparent' }
+          { label: 'Blog Articles', value: stats.blogs, change: 'Manage published stories & BTS', target: 'blog', bg: 'from-amber-600/10 to-transparent' }
         ].map((m, i) => (
           <div
             key={i}
@@ -206,7 +207,7 @@ export default function DashboardSection({
       {/* Bottom split list panels */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Recent Added Table */}
-        <div className="lg:col-span-7 bg-obsidian-900 border border-obsidian-700/50 p-5 rounded-xl shadow-md text-left flex flex-col justify-between">
+        <div className="lg:col-span-12 bg-obsidian-900 border border-obsidian-700/50 p-5 rounded-xl shadow-md text-left flex flex-col justify-between">
           <div>
             <h3 className="text-xs uppercase tracking-widest text-obsidian-100 font-black font-mono mb-4">Recent Added Content</h3>
             <div className="overflow-x-auto">
@@ -247,39 +248,6 @@ export default function DashboardSection({
               </table>
             </div>
           </div>
-        </div>
-
-        {/* Recent Enquiries List */}
-        <div className="lg:col-span-5 bg-obsidian-900 border border-obsidian-700/50 p-5 rounded-xl shadow-md text-left flex flex-col justify-between">
-          <h3 className="text-xs uppercase tracking-widest text-obsidian-100 font-black font-mono mb-4">Recent Enquiries</h3>
-
-          <div className="space-y-3">
-            {messages.slice(0, 3).map((msg) => (
-              <div key={msg._id} className="flex justify-between items-start space-x-3 bg-obsidian-950 p-3 border border-obsidian-700/40 rounded-lg">
-                <div className="flex items-start space-x-3 text-left min-w-0">
-                  <div className="w-8 h-8 rounded-full bg-obsidian-800 overflow-hidden shrink-0 border border-gold-500/20 flex items-center justify-center text-xs font-bold text-gold-500">
-                    {msg.name.slice(0, 2).toUpperCase()}
-                  </div>
-                  <div className="min-w-0">
-                    <h5 className="font-bold text-[11px] text-obsidian-100 leading-tight truncate">{msg.name}</h5>
-                    <p className="text-[9px] text-gold-500 uppercase tracking-wider font-semibold mt-1 truncate">{msg.subject}</p>
-                  </div>
-                </div>
-                <span className="text-[7.5px] text-slate-500 font-mono shrink-0">Inbox</span>
-              </div>
-            ))}
-            {messages.length === 0 && (
-              <p className="text-xs text-slate-500 italic py-4">No recent bookings in mail.</p>
-            )}
-          </div>
-
-          <button
-            onClick={() => handleTabSelect('enquiries')}
-            className="w-full text-center text-[8.5px] uppercase tracking-widest text-gold-500 hover:text-gold-600 mt-4.5 font-black flex items-center justify-center space-x-1.5 cursor-pointer"
-          >
-            <span>Open Bookings Mailbox</span>
-            <ChevronRight size={10} />
-          </button>
         </div>
       </div>
     </div>

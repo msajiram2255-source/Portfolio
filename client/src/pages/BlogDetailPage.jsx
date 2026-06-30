@@ -1,8 +1,9 @@
 import { ArrowLeft, Eye, Share2 } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import ShinyText from '../components/ShinyText';
+import SEO, { generateArticleSchema, generateBreadcrumbSchema } from '../components/SEO';
 
-export default function BlogDetailPage({ blog, onBackClick, loading }) {
+export default function BlogDetailPage({ blog, onBackClick, loading, siteContent }) {
   const [copied, setCopied] = useState(false);
   const viewLogged = useRef(false);
 
@@ -79,6 +80,22 @@ export default function BlogDetailPage({ blog, onBackClick, loading }) {
 
   return (
     <div className="min-h-screen bg-white text-charcoal-900 animate-fade-in flex flex-col pt-24 pb-16">
+      <SEO
+        title={blog.title}
+        description={blog.excerpt || `Read ${blog.title} by Midhun Saji Ram.`}
+        keywords={`${blog.title}, Midhun Saji Ram Blog, ${blog.category || 'Reflection'}, Artist Stories`}
+        canonical={`/blog-detail?id=${blog._id}`}
+        ogImage={blog.coverUrl || undefined}
+        ogType="article"
+        schemas={[
+          generateArticleSchema(blog),
+          generateBreadcrumbSchema([
+            { name: 'Home', url: '/' },
+            { name: 'Blog', url: '/blog' },
+            { name: blog.title, url: `/blog-detail?id=${blog._id}` },
+          ]),
+        ]}
+      />
       <div className="max-w-7xl mx-auto px-6 w-full flex-1 flex flex-col justify-start font-outfit">
         
         {/* Navigation & Actions Header */}
@@ -110,6 +127,7 @@ export default function BlogDetailPage({ blog, onBackClick, loading }) {
               <img 
                 src={blog.coverUrl} 
                 alt={blog.title} 
+                loading="lazy"
                 className="w-full h-full object-cover filter brightness-95"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-cream-200/80 via-transparent to-transparent"></div>
@@ -146,14 +164,14 @@ export default function BlogDetailPage({ blog, onBackClick, loading }) {
             <div className="flex items-center space-x-3 text-left">
               <div className="w-10 h-10 rounded-full border border-gold-500/20 overflow-hidden bg-neutral-200">
                 <img
-                  src={`data:image/svg+xml;utf8,${encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100%" height="100%" fill="#b89033"/><text x="50%" y="55%" dominant-baseline="middle" text-anchor="middle" font-family="serif" font-size="40" font-weight="bold" fill="#ffffff">M</text></svg>')}`}
-                  alt="Midhun Saji Ram"
+                  src={siteContent?.profile?.avatarUrl || `data:image/svg+xml;utf8,${encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100%" height="100%" fill="#b89033"/><text x="50%" y="55%" dominant-baseline="middle" text-anchor="middle" font-family="serif" font-size="40" font-weight="bold" fill="#ffffff">M</text></svg>')}`}
+                  alt={siteContent?.profile?.name || "Midhun Saji Ram"}
                   className="w-full h-full object-cover"
                 />
               </div>
               <div>
-                <h5 className="font-serif text-charcoal-900 font-bold text-xs">Midhun Saji Ram</h5>
-                <p className="text-[9px] text-gray-500 uppercase tracking-wider">Author & Artiste</p>
+                <h5 className="font-serif text-charcoal-900 font-bold text-xs">{siteContent?.profile?.name || "Midhun Saji Ram"}</h5>
+                <p className="text-[9px] text-gray-500 uppercase tracking-wider">{siteContent?.profile?.designation || "Author & Artiste"}</p>
               </div>
             </div>
 

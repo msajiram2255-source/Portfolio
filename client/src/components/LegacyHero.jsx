@@ -15,6 +15,10 @@ export default function LegacyHero({ onPlayClick, onExploreClick, content, isPla
           src={c.heroImage || "/midhunhero1.png"}
           alt="Midhun Saji Ram & Saji Ram Legacy Banner"
           className="w-full h-full object-cover object-[center_35%] filter brightness-95"
+          loading="eager"
+          fetchpriority="high"
+          width={1920}
+          height={1080}
         />
         <div className="absolute inset-0 z-10 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />      </div>
 

@@ -27,7 +27,7 @@ import { getTabWorkType, getYoutubeId } from './utils/helpers';
 // Import dashboard components
 import BlogSection from './components/BlogSection';
 import DashboardSection from './components/DashboardSection';
-import EnquiriesSection from './components/EnquiriesSection';
+// EnquiriesSection component import removed (Web3Forms integration)
 import GallerySection from './components/GallerySection';
 import MediaWorksSection from './components/MediaWorksSection';
 import SiteContentSection from './components/SiteContentSection';
@@ -133,6 +133,9 @@ export default function App() {
     brandName: '', brandTagline: '', description: '',
     bookingEmail: '', location: '',
     spotifyUrl: '', youtubeUrl: '', instagramUrl: ''
+  });
+  const [profileForm, setProfileForm] = useState({
+    name: '', designation: '', phone: '', email: '', location: '', avatarUrl: ''
   });
   const [faqsForm, setFaqsForm] = useState({
     subtitle: '', title: '', items: []
@@ -390,6 +393,16 @@ export default function App() {
     };
   };
 
+  const getAssetUrl = (url) => {
+    if (!url) return '';
+    if (typeof url !== 'string') return url;
+    if (url.startsWith('/uploads')) {
+      const BASE = API_URL.replace('/api', '');
+      return `${BASE}${url}`;
+    }
+    return url;
+  };
+
   const loadSiteContent = async () => {
     try {
       const res = await fetch(`${API_URL}/site-content`);
@@ -411,6 +424,9 @@ export default function App() {
         }
         if (data.content.faqs) {
           setFaqsForm(prev => ({ ...prev, ...data.content.faqs }));
+        }
+        if (data.content.profile) {
+          setProfileForm(prev => ({ ...prev, ...data.content.profile }));
         }
       }
     } catch (err) {
@@ -434,6 +450,8 @@ export default function App() {
         if (updatedData.polaroidImage) {
           updatedData.polaroidImage = await uploadIfNeeded(updatedData.polaroidImage);
         }
+      } else if (section === 'profile' && updatedData.avatarUrl) {
+        updatedData.avatarUrl = await uploadIfNeeded(updatedData.avatarUrl);
       }
 
       const res = await fetch(`${API_URL}/site-content/${section}`, {
@@ -468,6 +486,7 @@ export default function App() {
     if (section === 'hero') setHeroForm(prev => ({ ...prev, [field]: file }));
     if (section === 'about') setAboutForm(prev => ({ ...prev, [field]: file }));
     if (section === 'father_legacy') setLegacyForm(prev => ({ ...prev, [field]: file }));
+    if (section === 'profile') setProfileForm(prev => ({ ...prev, [field]: file }));
   };
 
   const handleLogin = async (e) => {
@@ -1141,7 +1160,6 @@ export default function App() {
                 System Settings
               </span>
               {[
-                { id: 'enquiries', label: 'Booking Inbox', icon: <Mail size={14} />, badge: stats.unreadMessages },
                 { id: 'site-content', label: 'Page Configurator', icon: <Settings size={14} /> }
               ].map((tab) => (
                 <button
@@ -1193,30 +1211,20 @@ export default function App() {
 
           {/* Right account & log out details */}
           <div className="flex items-center space-x-5">
-            <button
-              onClick={() => handleTabSelect('enquiries')}
-              className="text-slate-400 hover:text-gold-500 transition-colors relative p-1.5 rounded-lg hover:bg-obsidian-800 cursor-pointer"
-            >
-              <Bell size={15} />
-              {stats.unreadMessages > 0 && (
-                <span className="absolute top-1 right-1 w-2 h-2 bg-gold-500 rounded-full animate-ping" />
-              )}
-            </button>
-
-            <div className="flex items-center space-x-2.5 border-l border-obsidian-700/40 pl-5 text-left select-none">
+            <div className="flex items-center space-x-2.5 text-left select-none">
               <div className="w-7 h-7 rounded-lg border border-gold-500/20 overflow-hidden bg-obsidian-800">
                 <img
-                  src="data:image/svg+xml;utf8,<svg xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;100&quot; height=&quot;100&quot; viewBox=&quot;0 0 100 100&quot;><rect width=&quot;100%&quot; height=&quot;100%&quot; fill=&quot;%23b89033&quot;/><text x=&quot;50%&quot; y=&quot;55%&quot; dominant-baseline=&quot;middle&quot; text-anchor=&quot;middle&quot; font-family=&quot;serif&quot; font-size=&quot;40&quot; font-weight=&quot;bold&quot; fill=&quot;%23ffffff&quot;>M</text></svg>"
+                  src={profileForm.avatarUrl ? getAssetUrl(profileForm.avatarUrl) : "data:image/svg+xml;utf8,<svg xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;100&quot; height=&quot;100&quot; viewBox=&quot;0 0 100 100&quot;><rect width=&quot;100%&quot; height=&quot;100%&quot; fill=&quot;%23b89033&quot;/><text x=&quot;50%&quot; y=&quot;55%&quot; dominant-baseline=&quot;middle&quot; text-anchor=&quot;middle&quot; font-family=&quot;serif&quot; font-size=&quot;40&quot; font-weight=&quot;bold&quot; fill=&quot;%23ffffff&quot;>M</text></svg>"}
                   alt="Admin Portrait"
                   className="w-full h-full object-cover"
                 />
               </div>
               <div className="hidden sm:block">
                 <h5 className="text-[11px] font-bold text-obsidian-100 flex items-center">
-                  <span>Midhun Saji Ram</span>
+                  <span>{profileForm.name || 'Midhun Saji Ram'}</span>
                   <ChevronDown size={11} className="ml-1 text-slate-500" />
                 </h5>
-                <p className="text-[8px] text-slate-500 uppercase tracking-wider font-semibold font-mono">Owner</p>
+                <p className="text-[8px] text-slate-500 uppercase tracking-wider font-semibold font-mono">{profileForm.designation || 'Owner'}</p>
               </div>
             </div>
 
@@ -1247,6 +1255,7 @@ export default function App() {
               streamData={streamData}
               handleMetricClick={handleMetricClick}
               handleTabSelect={handleTabSelect}
+              profile={profileForm}
             />
           )}
 
@@ -1338,14 +1347,7 @@ export default function App() {
             />
           )}
 
-          {/* TAB 6: BOOKING INBOX MESSAGES */}
-          {activeTab === 'enquiries' && (
-            <EnquiriesSection
-              messages={messages}
-              handleMarkMessageRead={handleMarkMessageRead}
-              handleDeleteMessage={handleDeleteMessage}
-            />
-          )}
+          {/* Booking inbox removed (using Web3Forms directly to mail) */}
 
           {/* TAB 7: SITE CONTENT CONFIGURATION */}
           {activeTab === 'site-content' && (
@@ -1370,6 +1372,8 @@ export default function App() {
               setNewFaqAnswer={setNewFaqAnswer}
               handleSiteContentImageUpload={handleSiteContentImageUpload}
               saveSiteContentSection={saveSiteContentSection}
+              profileForm={profileForm}
+              setProfileForm={setProfileForm}
             />
           )}
 

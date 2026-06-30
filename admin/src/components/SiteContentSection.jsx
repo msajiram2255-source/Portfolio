@@ -22,7 +22,9 @@ export default function SiteContentSection({
   newFaqAnswer,
   setNewFaqAnswer,
   handleSiteContentImageUpload,
-  saveSiteContentSection
+  saveSiteContentSection,
+  profileForm,
+  setProfileForm
 }) {
   return (
     <div className="space-y-6 animate-fade-in text-left">
@@ -47,7 +49,8 @@ export default function SiteContentSection({
               { id: 'about', label: 'About Story' },
               { id: 'father_legacy', label: "Father's Legacy" },
               { id: 'footer', label: 'Footer Links' },
-              { id: 'faqs', label: 'FAQs Config' }
+              { id: 'faqs', label: 'FAQs Config' },
+              { id: 'profile', label: 'Admin Profile Details' }
             ].map(tab => (
               <option key={tab.id} value={tab.id} className="bg-obsidian-950 text-obsidian-100">
                 {tab.label}
@@ -340,6 +343,51 @@ export default function SiteContentSection({
 
             <div className="flex justify-end pt-2">
               <button onClick={() => saveSiteContentSection('faqs', faqsForm)} disabled={contentSaving} className="px-5 py-2.5 bg-gold-500 hover:bg-gold-600 disabled:opacity-50 text-white font-bold text-xs uppercase tracking-widest rounded-lg transition-all flex items-center space-x-2 cursor-pointer shadow-lg active:scale-98 shadow-gold-500/10">
+                <Save size={13} />
+                <span>{contentSaving ? 'Saving...' : 'Save Settings'}</span>
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* ===== ADMIN PROFILE EDITOR ===== */}
+        {activeContentSection === 'profile' && (
+          <div className="bg-obsidian-900 border border-obsidian-700/50 p-4 sm:p-5 rounded-xl space-y-3 shadow animate-fade-in">
+            <div className="flex items-center justify-between border-b border-obsidian-700/40 pb-3">
+              <h3 className="text-xs uppercase tracking-widest text-gold-500 font-black">Admin Profile / Artist Details</h3>
+              {contentSaveSuccess === 'profile' && <span className="bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-[8.5px] uppercase tracking-widest font-black px-2 py-0.5 rounded font-mono animate-pulse">✓ Saved Settings</span>}
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <FormField label="Full Name">
+                <Input type="text" value={profileForm.name} onChange={e => setProfileForm({ ...profileForm, name: e.target.value })} placeholder="Midhun Saji Ram" />
+              </FormField>
+              <FormField label="Designation / Role">
+                <Input type="text" value={profileForm.designation} onChange={e => setProfileForm({ ...profileForm, designation: e.target.value })} placeholder="Music Director & Composer" />
+              </FormField>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <FormField label="Contact Email Address">
+                <Input type="email" value={profileForm.email} onChange={e => setProfileForm({ ...profileForm, email: e.target.value })} placeholder="bookings@midhunsajiram.in" />
+              </FormField>
+              <FormField label="Contact Phone Number">
+                <Input type="text" value={profileForm.phone} onChange={e => setProfileForm({ ...profileForm, phone: e.target.value })} placeholder="+91 90745 81234" />
+              </FormField>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <FormField label="Base Location">
+                <Input type="text" value={profileForm.location} onChange={e => setProfileForm({ ...profileForm, location: e.target.value })} placeholder="Kochi, Kerala, India" />
+              </FormField>
+              <FormField label="Profile Portrait Avatar">
+                <FileUpload accept="image/*" onChange={e => handleSiteContentImageUpload(e, 'profile', 'avatarUrl')} label="Upload Avatar" value={profileForm.avatarUrl} />
+                <Input type="text" value={typeof profileForm.avatarUrl === 'string' ? profileForm.avatarUrl : ''} onChange={e => setProfileForm({ ...profileForm, avatarUrl: e.target.value })} placeholder="Or Enter Avatar Image URL" className="mt-1.5 bg-obsidian-950/70 border border-obsidian-850 px-3 py-2 text-[10px] text-obsidian-100 rounded-lg focus:outline-none" />
+              </FormField>
+            </div>
+
+            <div className="flex justify-end pt-2">
+              <button onClick={() => saveSiteContentSection('profile', profileForm)} disabled={contentSaving} className="px-5 py-2.5 bg-gold-500 hover:bg-gold-600 disabled:opacity-50 text-white font-bold text-xs uppercase tracking-widest rounded-lg transition-all flex items-center space-x-2 cursor-pointer shadow-lg active:scale-98 shadow-gold-500/10">
                 <Save size={13} />
                 <span>{contentSaving ? 'Saving...' : 'Save Settings'}</span>
               </button>
